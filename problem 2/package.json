@@ -1,24 +1,39 @@
 {
-  "name": "campus-orbit",
+  "name": "campusflow-ai",
   "version": "1.0.0",
-  "description": "Campus Orbit - AI Campus Event Planning & Coordination Multi-Agent Platform",
-  "main": "scripts/start_tunnel.js",
+  "description": "CampusFlow AI - AI-Powered Campus Event Planning & Coordination Agent",
+  "private": true,
   "scripts": {
-    "start": "python scripts/run_app.py",
-    "tunnel": "node scripts/start_tunnel.js",
-    "test": "pytest tests/ -v"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "seed": "tsx prisma/seed.ts"
   },
-  "keywords": [
-    "multi-agent-ai",
-    "event-management",
-    "campus-operations",
-    "hackathon",
-    "fastapi",
-    "dynamic-replanning"
-  ],
-  "author": "Campus Orbit Team",
-  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.17.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.417.0",
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7",
+    "tailwind-merge": "^2.4.0"
+  },
   "devDependencies": {
-    "localtunnel": "^2.0.2"
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "prisma": "^5.17.0",
+    "tailwindcss": "^3.4.6",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.4"
   }
 }

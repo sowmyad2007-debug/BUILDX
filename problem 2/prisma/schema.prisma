@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String   @default("ORGANIZER") // ORGANIZER, VOLUNTEER_COORDINATOR, SECURITY_OFFICER, ADMIN
+  avatarUrl String?
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id                  String                @id @default(cuid())
+  name                String
+  type                String                @default("Technical Fest") // Hackathon, Conference, Workshop, Placement Drive, etc.
+  description         String?
+  rawPrompt           String?
+  startDate           String
+  endDate             String
+  attendeeCount       Int                   @default(100)
+  budget              Float                 @default(0.0)
+  status              String                @default("PLANNING") // DRAFT, PLANNING, APPROVED, ACTIVE, COMPLETED, CANCELLED
+  readinessScore      Int                   @default(0)
+  location            String                @default("Main Campus")
+  specialRequirements String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  activities          Activity[]
+  conflicts           Conflict[]
+  approvals           Approval[]
+  tasks               Task[]
+  checklistItems      ChecklistItem[]
+  notifications       Notification[]
+  briefings           Briefing[]
+  equipmentAllocations EquipmentAllocation[]
+  volunteerAssignments VolunteerAssignment[]
+}
+
+model Venue {
+  id                 String       @id @default(cuid())
+  name               String
+  code               String       @unique
+  capacity           Int
+  location           String
+  availableEquipment String       @default("[]") // JSON string of equipment list
+  wifiCoverage       String       @default("Excellent") // Excellent, Good, Moderate
+  isAccessible       Boolean      @default(true)
+  currentBooking     String?
+  suitabilityScore   Int          @default(90)
+  status             String       @default("AVAILABLE") // AVAILABLE, BOOKED, MAINTENANCE, OFFLINE
+  createdAt          DateTime     @default(now())
+  activities         Activity[]
+}
+
+model Equipment {
+  id                String                @id @default(cuid())
+  name              String
+  category          String                @default("Audio/Visual") // Audio/Visual, Computing, Network, Power, Furniture
+  totalQuantity     Int                   @default(10)
+  availableQuantity Int                   @default(10)
+  allocatedQuantity Int                   @default(0)
+  storageLocation   String                @default("Central A/V Room")
+  status            String                @default("AVAILABLE") // AVAILABLE, DEFICIT, CRITICAL
+  createdAt         DateTime              @default(now())
+  allocations       EquipmentAllocation[]
+}
+
+model EquipmentAllocation {
+  id           String    @id @default(cuid())
+  eventId      String
+  equipmentId  String
+  quantity     Int       @default(1)
+  activityName String
+  status       String    @default("ALLOCATED") // ALLOCATED, RELEASED
+  createdAt    DateTime  @default(now())
+
+  event        Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  equipment    Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+}
+
+model Volunteer {
+  id          String                @id @default(cuid())
+  name        String
+  email       String                @unique
+  phone       String?
+  department  String                @default("Computer Science")
+  skills      String                @default("[]") // JSON string array of skills
+  role        String                @default("Squad Member")
+  availability String               @default("AVAILABLE") // AVAILABLE, ASSIGNED, UNAVAILABLE
+  shiftCount  Int                   @default(0)
+  createdAt   DateTime              @default(now())
+  assignments VolunteerAssignment[]
+}
+
+model VolunteerAssignment {
+  id           String    @id @default(cuid())
+  eventId      String
+  volunteerId  String
+  squad        String    @default("GENERAL") // REGISTRATION, TECH_SUPPORT, HOSPITALITY, SECURITY_LOGISTICS, GENERAL
+  shiftStart   String
+  shiftEnd     String
+  activityName String
+  status       String    @default("CONFIRMED")
+  createdAt    DateTime  @default(now())
+
+  event        Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  volunteer    Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id                String   @id @default(cuid())
+  eventId           String
+  title             String
+  description       String?
+  venueId           String?
+  venueName         String
+  startTime         String
+  endTime           String
+  track             String   @default("Main Track")
+  requiredEquipment String   @default("[]") // JSON string array
+  attendeeTarget    Int      @default(50)
+  status            String   @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, COMPLETED, DELAYED, CANCELLED
+  dependencies      String   @default("[]") // JSON string array
+  createdAt         DateTime @default(now())
+
+  event             Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  venue             Venue?   @relation(fields: [venueId], references: [id])
+}
+
+model Conflict {
+  id                      String    @id @default(cuid())
+  eventId                 String
+  category                String    @default("VENUE_DOUBLE_BOOKING") // VENUE_DOUBLE_BOOKING, CAPACITY_OVERSHOOT, EQUIPMENT_SHORTAGE, VOLUNTEER_OVERLAP, CHRONOLOGY_ERROR, PERMISSION_MISSING
+  severity                String    @default("HIGH") // CRITICAL, HIGH, MEDIUM, LOW
+  title                   String
+  description             String
+  affectedItem            String
+  recommendedAlternatives String    @default("[]") // JSON string array of alternative options
+  status                  String    @default("ACTIVE") // ACTIVE, RESOLVED, IGNORED
+  resolvedAt              DateTime?
+  createdAt               DateTime  @default(now())
+
+  event                   Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Approval {
+  id              String    @id @default(cuid())
+  eventId         String
+  title           String
+  reason          String
+  category        String    @default("GENERAL") // BUDGET, SECURITY, VENUE_RELOCATION, OVERTIME, PERMISSION
+  requestedBy     String    @default("AI Planner Agent")
+  priority        String    @default("HIGH") // CRITICAL, HIGH, MEDIUM, LOW
+  status          String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  resolutionNotes String?
+  approvedBy      String?
+  resolvedAt      DateTime?
+  createdAt       DateTime  @default(now())
+
+  event           Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id            String   @id @default(cuid())
+  eventId       String
+  title         String
+  description   String?
+  assignedSquad String   @default("GENERAL")
+  assignedTo    String?
+  deadline      String
+  priority      String   @default("MEDIUM") // CRITICAL, HIGH, MEDIUM, LOW
+  status        String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, BLOCKED
+  dependencies  String   @default("[]") // JSON array string
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model ChecklistItem {
+  id          String    @id @default(cuid())
+  eventId     String
+  category    String    @default("LOGISTICS") // VENUE, EQUIPMENT, SECURITY, VOLUNTEERS, LOGISTICS
+  title       String
+  description String?
+  isCompleted Boolean   @default(false)
+  completedBy String?
+  completedAt DateTime?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id         String   @id @default(cuid())
+  eventId    String?
+  title      String
+  message    String
+  type       String   @default("GENERAL") // CONFLICT, TASK, APPROVAL, VENUE_CHANGE, REPLAN, GENERAL
+  roleTarget String   @default("ALL") // ALL, ORGANIZER, VOLUNTEER, SECURITY, ADMIN
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  event      Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Briefing {
+  id              String   @id @default(cuid())
+  eventId         String
+  targetRole      String   // ORGANIZER, VOLUNTEERS, SECURITY_TEAM, VENUE_FACILITY, TECHNICAL_CREW
+  title           String
+  summary         String
+  keyInstructions String   @default("[]") // JSON string list
+  contactPerson   String   @default("Lead Event Coordinator")
+  createdAt       DateTime @default(now())
+
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}

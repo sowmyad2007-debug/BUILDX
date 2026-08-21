@@ -1,107 +1,96 @@
-# 🎬 CAMPUS ORBIT — 3-5 MINUTE HACKATHON DEMO SCRIPT
+# 🏆 CAMPUS FLOW — Hackathon Demonstration & Judging Guide
 
-> **Tagline:** *"Plan smarter. Coordinate automatically. Adapt instantly."*  
-> **Presenter Goal:** Demonstrate that Campus Orbit is not just a chatbot, but an agentic multi-agent orchestration engine that validates hard physical constraints and dynamically adapts to disruptions in real time.
-
----
-
-## ⏱️ Step-by-Step Demonstration Flow (3–5 Minutes)
-
-### 1. Opening Hook (30 seconds)
-- **Action:** Open `http://127.0.0.1:8000` (Landing Page).
-- **Pitch:**  
-  *"Good morning judges. Planning collegiate events like hackathons or conferences involves balancing hundreds of physical constraints—auditorium capacities, projector inventory, volunteer shifts, and curfew permissions. When conditions change—like a hall breaking down—manual replanning is chaotic.  
-  Meet **Campus Orbit**: an agentic multi-agent platform that turns natural-language briefs into executable plans and dynamically replans the moment disruptions happen."*
+Follow this step-by-step walkthrough to present **CAMPUS FLOW** ("Plan Better. Coordinate Smarter. Run Better Events.") to hackathon judges.
 
 ---
 
-### 2. Natural Language Event Intake & AI Planner (45 seconds)
-- **Action:** Click **"TRY AI PLANNER"** in the top navbar or hero.
-- **Action:** Click **"Load Sample Hackathon Prompt"** (or type):
-  > *"We are organizing a 2-day AI hackathon for 300 students. We need one auditorium, three classrooms, 20 volunteers, Wi-Fi, projectors, technical support, food arrangements and security."*
-- **Action:** Click **"Extract Requirements"**.
-- **Point out to judges:**
-  - Show how the NLP parser extracted: Event Name, 300 participants, 2 days duration, 20 volunteers, required venues, equipment list, budget, and security flags into clean editable fields.
-- **Action:** Click the purple button **"GENERATE EVENT PLAN"**.
-- **Pitch:**  
-  *"Notice what just happened: The master Event Manager Agent delegated tasks in parallel to 5 domain agents—Venue Agent, Schedule Agent, Resource Agent, Volunteer Agent, and Conflict Agent."*
+## 🎬 Complete Hackathon Live Demonstration Flow
 
----
+### Step 1: Open Home Page (`/`)
+- **URL**: [http://localhost:3000](http://localhost:3000)
+- **Showcase**:
+  - Hero Header: *"CAMPUS FLOW"* — *"Plan Better. Coordinate Smarter. Run Better Events."*
+  - CTA Buttons: **"Explore Events"**, **"Register for an Event"**, **"Organizer Login"**.
+  - Sections: Featured Programs, 6 Event Categories, How It Works (Student & Organizer journeys), Event Coordination Features.
 
-### 3. Operational Master Plan & Subsystem Breakdown (45 seconds)
-- **Action:** You are now on `#event-plan`.
-- **Point out to judges:**
-  - **Venues Allocated:** Main Auditorium (500 Cap) + 3 CSE Labs (60 workstations each).
-  - **Volunteer Squads:** 20 organizers divided into 5 squads (Registration, Tech Support, Hospitality, Security, General).
-  - **Visual Schedule Timeline:** Chronological Day 1 & Day 2 run-of-show with prerequisites and team tags.
-  - **AI Consensus Reasoning:** Click any **"Why?"** button on the reasoning cards to show transparent explainability.
-- **Action:** Click **"Stakeholder Briefing"** to demonstrate one-click Markdown run-of-show export.
+### Step 2: Explore All 9 Campus Events (`/events`)
+- **URL**: `/events`
+- **Showcase**:
+  - All 9 realistic campus events displayed as interactive cards:
+    1. **TechFest 2026** (₹150)
+    2. **Hackathon 2026** (₹200)
+    3. **AI & Innovation Summit** (₹300)
+    4. **CodeSprint** (₹100)
+    5. **Robotics Challenge** (₹200)
+    6. **Placement Drive** (Free)
+    7. **Technical Workshop** (₹50)
+    8. **Cultural Fest** (Free)
+    9. **Sports Carnival** (₹50)
+  - Test the **Search Bar**, **Category Filter**, **Price Filter** (Free to ₹300), and observe live seat progress bars.
 
----
+### Step 3: Event Details & Instant Registration (`/events/evt-techfest-2026`)
+- **URL**: `/events/evt-techfest-2026`
+- **Showcase**:
+  - Banner image, date, time, venue, capacity, seats remaining, price summary, organizer contact, master schedule timeline, and participation rules.
+  - Click **"Register Now"** to open the registration modal.
+  - Submit the registration: Notice the instant generation of a unique **Digital Pass ID** (e.g. `REG-TEC26-8941`) and payment status.
 
-### 4. Calculated Event Readiness Dashboard (30 seconds)
-- **Action:** Click **"Readiness"** in the sidebar (or `#readiness`).
-- **Point out to judges:**
-  - *"Campus Orbit doesn't guess event readiness. It dynamically calculates an 8-category weighted readiness index (82%)."*
-  - Show the categories: Venue Planning (100%), Equipment (85%), Volunteers (90%), Security (70%), Permissions (60%).
-  - Point out the active blockers: *Pending Midnight Catering Budget ($1,200)*.
+### Step 4: Student Dashboard (`/dashboard`)
+- **URL**: `/dashboard`
+- **Showcase**:
+  - Logged-in student profile (Rahul Deshmukh • STU-2023-CS042).
+  - **"My Registrations"** table with Event Name, Date, Venue, Time, Price in ₹, Registration ID, and confirmed status.
+  - Test cancelling or managing registrations and review the recent notification broadcasts feed.
 
----
+### Step 5: Organizer Event Requirement Intake (`/organizer/create-event`)
+- **URL**: `/organizer/create-event`
+- **Showcase**:
+  - Core Hackathon Feature: Enter or click the preset prompt:
+    *"Organize a 2-day technical fest for 500 students with 6 workshops, 2 seminar halls, 4 labs, 30 volunteers, AV equipment, security, transport and food arrangements."*
+  - Click **"1. Extract & Analyze Parameters"**: Notice structured extraction of headcounts, duration, candidate venues, and required hardware.
+  - Edit any parameter and click **"2. Generate Operational Plan"**.
 
-### 5. Constraint Engine & Conflict Detection (30 seconds)
-- **Action:** Click **"Conflicts"** in the sidebar (or `#conflicts`).
-- **Point out to judges:**
-  - Show the **Critical Conflict**: *Main Auditorium double-booking between Opening Ceremony (10:00–12:00) and University Guest Lecture (11:00–13:00)*.
-  - Show the AI Recommendation: *Move Guest Lecture to Innovation Hall (Capacity: 250)*.
-  - Click **"Why this recommendation?"** to show the explainability rationale.
-  - Click **"APPLY RECOMMENDATION"** to resolve it with a single click!
+### Step 6: Multi-Agent Planning Dashboard (`/organizer/planning`)
+- **URL**: `/organizer/planning`
+- **Showcase**:
+  - Tabbed operational inspector across:
+    - 🕒 **Master Schedule**: Multi-track chronological timeline.
+    - 🏛️ **Venues**: Main Auditorium, Seminar Halls A/B, Computer Labs, Innovation Lab, Conference Hall, Open Ground, Sports Complex.
+    - 📦 **Equipment**: Projectors, Microphones, Wi-Fi 6 Routers, Extension Boards with stock status.
+    - 👥 **Volunteers**: 20 student roster across 5 squads with shift tracking.
+    - 🛡️ **Security**: Guard allocations and emergency action plan.
+    - 🚌 **Transport**: Shuttle vans and metro loops.
+    - 🔒 **Permissions**: Clearances queue.
+    - 📋 **Tasks & Deadlines**: Delegated squad assignments.
+    - ⚠️ **Conflicts**: Active constraint collisions.
+    - 📈 **Readiness**: 0–100% weighted index.
 
----
+### Step 7: Constraint Checking & Conflict Resolution (`/conflicts`)
+- **URL**: `/conflicts`
+- **Showcase**:
+  - Deterministic conflict engine detected a double-booking in Seminar Hall A.
+  - Click **"Apply Alternative"** (Relocate to Seminar Hall B) and observe instant resolution.
 
-### 6. The Showcase: Simulation Center ("What If?" Dynamic Replanning) (90 seconds)
-- **Action:** Click **"Simulation Center"** in the sidebar (or `#simulation`).
-- **Pitch:**  
-  *"Now let's demonstrate the most powerful feature of Campus Orbit: **Dynamic Replanning**."*
-- **Action:** Select Scenario #1: **"Main Auditorium Becomes Unavailable"** (HVAC electrical breakdown).
-- **Point out the 9-Stage Stepper:**
-  1. *Disruption Intake & Anomaly Detection*
-  2. *Downstream Impact Analysis (300 participants affected)*
-  3. *Hard Constraint Verification (Seating ≥ 250, AV, 1Gbps Wi-Fi, Ramp accessibility)*
-  4. *Candidate Alternative Search (Queried 7 campus venues)*
-  5. *Multi-Criteria Fitness Ranking (#1: Innovation Hall at 94%, #2: Convention Hall at 89%)*
-  6. *Synthesize Revised Operational Plan*
-  7. *Compute Before vs After Delta*
-  8. *Human Approval Governance Trigger*
-  9. *Execution Ready*
-- **Point out the BEFORE vs AFTER View:**
-  - **BEFORE:** Main Auditorium | 10:00 AM | Status: Unavailable
-  - **AFTER:** Innovation Hall | 10:00 AM | Status: Available & Reserved
-  - Reason: *"Innovation Hall satisfies capacity, equipment and availability requirements while creating no new schedule conflicts."*
-- **Action:** Click **"APPLY APPROVED REVISED PLAN"**.
+### Step 8: Dynamic Replanning & Disruption Simulator (`/replan`)
+- **URL**: `/replan`
+- **Showcase**:
+  - Select **"⚡ Sudden Venue Outage"** (Seminar Hall A offline).
+  - Click **"Trigger Autonomous Replanning Pipeline"**.
+  - Review the **9-step execution trace** and the side-by-side **BEFORE → CHANGE → CONFLICT → ALTERNATIVE → UPDATED PLAN** comparison table.
 
----
+### Step 9: Human Governance Approvals (`/organizer/approvals`)
+- **URL**: `/organizer/approvals`
+- **Showcase**:
+  - Demonstrates that agents cannot bypass safety/budget barriers.
+  - Click **"Approve & Sign"** on the Night Hackathon Security Clearance.
 
-### 7. Verifying the Live Adaptation (30 seconds)
-- **Action:** Navigate to **Schedule** (`#schedule`) and **Venues** (`#venues`).
-- **Point out to judges:**
-  - Opening Ceremony has been live-relocated to **Innovation Hall** with status badge `Relocated`.
-  - Main Auditorium status is now marked as `Maintenance`.
-  - Open **Approvals** (`#approvals`) to show human governance ticket created.
+### Step 10: Executive Admin Control Center (`/admin`)
+- **URL**: `/admin`
+- **Showcase**:
+  - Total events (9), Total registrations (3,500+), Gross Revenue in ₹, Seat Utilization breakdown, and Venue Occupancy matrix.
 
----
-
-### 8. Closing Pitch (15 seconds)
-- **Pitch:**  
-  *"Campus Orbit delivers true agentic AI: transparent, deterministic, physically grounded, and instantly adaptive to real-world campus disruptions. Thank you!"*
-
----
-
-## 💡 Key Highlights to Emphasize to Judges
-
-| Feature | Why it Wins |
-|---|---|
-| **Zero Mockups** | Everything is 100% functional, runnable, and connected to FastAPI backend APIs. |
-| **Demo Mode Guarantee** | Zero risk of API outage or missing credit during presentation; works perfectly out of the box. |
-| **Explainable AI** | Every decision has a "WHY?" button grounded in physical constraints. |
-| **Human-in-the-Loop** | High-risk items (budget, permits) require explicit human sign-off. |
-| **Before / After Delta** | Visually proves autonomous replanning in seconds. |
+### Step 11: System Flow & REST API Documentation (`/system-flow` & `/api-docs`)
+- **URL**: `/system-flow` and `/api-docs`
+- **Showcase**:
+  - 12-stage visual operational flow.
+  - Live interactive API testing for all endpoints (`/api/events`, `/api/registrations`, `/api/conflicts/check`, `/api/replan`, `/api/admin/stats`, `/api/health`).

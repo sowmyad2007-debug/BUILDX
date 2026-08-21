@@ -1,37 +1,38 @@
-# 🪐 CAMPUS ORBIT
-> **Plan smarter. Coordinate automatically. Adapt instantly.**
+# 🪐 CampusFlow AI — Autonomous Campus Event Planning & Coordination Platform
+> **AI-Powered Multi-Agent Event Operations, Real-Time Constraint Validation & Dynamic Replanning**
 
-An agentic AI platform that transforms natural-language campus event requirements into executable operational plans, validates hard physical constraints, coordinates cross-functional squads, and dynamically replans when real-world conditions change.
-
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python)](https://python.org)
-[![Tailwind CSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-38B2AC.svg?style=flat&logo=tailwind-css)](https://tailwindcss.com)
-[![Multi-Agent AI](https://img.shields.io/badge/Architecture-Multi--Agent_AI-8B5CF6.svg?style=flat)]()
+[![Next.js 14](https://img.shields.io/badge/Next.js-14.2.5-black.svg?style=flat&logo=next.js)](https://nextjs.org)
+[![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB.svg?style=flat&logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6.svg?style=flat&logo=typescript)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC.svg?style=flat&logo=tailwind-css)](https://tailwindcss.com)
+[![Prisma ORM](https://img.shields.io/badge/Prisma-5.17-2D3748.svg?style=flat&logo=prisma)](https://prisma.io)
+[![Vitest](https://img.shields.io/badge/Vitest-2.0-FCC72B.svg?style=flat&logo=vitest)](https://vitest.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
 ## 📌 Problem Statement (CSE Hackathon 2026)
-**Domain:** College / Campus Operations / Multi-Agent AI  
-Organizing large collegiate events (hackathons, symposiums, fests) involves complex logistics across dozens of stakeholders: booking auditoriums, ensuring adequate seating capacity, checking A/V hardware inventory, aligning multi-day timelines, assigning student volunteer squads, obtaining security clearances, and handling unexpected disruptions.
+Organizing large collegiate technical fests, hackathons, conferences, workshops, and placement drives requires continuous coordination of venues, multi-track schedules, audio/visual hardware, student volunteer squads, campus security, catering, and administrative approvals.
 
-Traditional tools are either static spreadsheets or simple text chatbots that lack awareness of physical constraints. **Campus Orbit** solves this by bridging natural language understanding with deterministic multi-agent constraint validation and instant dynamic replanning.
+Traditional solutions are static spreadsheets or simple text chatbots that are blind to physical constraints (e.g. auditorium seating limits, hardware deficits, double-booked rooms). When unexpected disruptions occur (such as power outages or volunteer shortages), organizers face hours of manual rescheduling.
+
+**CampusFlow AI** solves this by bridging **natural-language requirement parsing** with a **deterministic constraint validation engine** and **autonomous 9-step dynamic replanning** that recalculates operational master plans in seconds.
 
 ---
 
 ## 🚀 Key Features
 
-- 🧠 **Natural-Language Event Requirement Intake**: Parse free-text event descriptions into structured operational parameters (venues, headcounts, equipment, squads, dates, budgets).
-- 🏛️ **Venue Planning & Alternative Ranking**: Evaluates 7 campus venues for seating capacity, projectors, microphones, Wi-Fi mesh, and accessibility.
-- 📦 **Resource & Hardware Inventory Management**: Balances stock across 8 critical categories (Projectors, Mics, Laptops, Power Strips, Wi-Fi Routers, Speakers, Chairs, Tables) with automated deficit mitigation.
-- 👥 **Volunteer & Support Squad Coordination**: Organizes 20 organizers across 5 specialized squads (Registration, Tech Support, Hospitality, Security, General).
-- ⏱️ **Visual Chronological Schedule**: Multi-track timeline synchronizing activity duration, room bookings, equipment needs, and prerequisite dependencies.
-- ⚠️ **Constraint & Conflict Engine**: Continuous multi-dimensional collision detection for room double-bookings, capacity overshoots, and hardware deficits.
-- ⚡ **Dynamic Replanning ("What If?" Simulation Center)**: Simulates sudden disruptions (e.g. Auditorium outage, equipment breakdown, volunteer sick leave, delays) through a 9-step adaptive replanning pipeline with side-by-side **BEFORE vs AFTER** state comparison.
-- 📊 **Calculated Event Readiness Dashboard**: Dynamically computed readiness score (0–100%) weighted across 8 operational domains.
-- 🛡️ **Human-in-the-Loop Governance**: Mandatory human ratification for budgets, night permissions, security protocols, and major facility relocations.
-- 💡 **AI Explainability ("WHY?" Buttons)**: Transparent consensus rationale explaining why specific venues or alternatives were selected.
-- 🔌 **Zero-Config Demo Mode**: Works 100% out of the box with realistic deterministic data—no paid API key or cloud database required for demonstration.
+- 🧠 **Natural Language Event Requirement Intake**: Parse free-text event descriptions (e.g. *"Plan a 2-day technical fest for 500 students with 6 workshops, 2 seminar halls, 4 labs, 30 volunteers, AV equipment..."*) into structured operational parameters.
+- 🏛️ **Venue Planning & Suitability Rankings**: Real-time evaluation of campus halls (Main Auditorium, Seminar Halls A/B, Computer Labs 1/2, Innovation Lab, Open Ground) for seating capacities, acoustics, Wi-Fi mesh coverage, and accessibility.
+- 📦 **Hardware Inventory Management**: Automated stock allocation across 8 critical categories (4K laser projectors, wireless mics, PA speakers, power strips, Wi-Fi 6 mesh routers, developer laptops).
+- 👥 **Volunteer Squad Coordination**: Roster management of 20 student volunteers across 5 specialized squads (Registration, Tech Support, Hospitality, Security & Logistics, General Coordination) with balanced shift workloads.
+- ⚠️ **Deterministic Conflict Detection Engine**: Multi-dimensional collision detection for venue double-bookings, capacity overshoots, equipment deficits, and chronological dependency violations.
+- ⚡ **9-Step Dynamic Replanning ("What If?" Center)**: Simulates sudden campus disruptions (e.g. Seminar Hall A HVAC failure, volunteer illness, attendance surge) with side-by-side **BEFORE → AFTER** operational delta comparisons.
+- 📊 **Calculated Event Readiness Dashboard**: Mathematically computed 0–100% readiness gauge dynamically weighted across Venues (20%), Hardware (15%), Volunteers (15%), Tasks (20%), Checklists (15%), and Approvals (15%).
+- 🛡️ **Human-in-the-Loop Governance**: Mandatory ratification workflows for budget authorizations, night campus security clearances, and major room relocations.
+- 📋 **Automated Readiness Checklists**: Interactive domain-specific checklists that recalculate event readiness in real time upon verification.
+- 📑 **Stakeholder Operational Briefings**: Auto-generated tailored dossiers for Security Personnel, Technical Crew, Volunteer Squads, and Event Directors.
+- 🔌 **Zero-Config Guarantee**: 100% functional out of the box using built-in deterministic planning algorithms—no paid cloud API key required for demonstration.
 
 ---
 
@@ -44,13 +45,13 @@ Traditional tools are either static spreadsheets or simple text chatbots that la
                                        │
                                        ▼
                          ┌───────────────────────────┐
-                         │   Requirement Parser &    │
+                         │   Requirement Analyzer    │
                          │   AI Intake Engine        │
                          └─────────────┬─────────────┘
                                        │
                                        ▼
                          ┌───────────────────────────┐
-                         │ Event Manager Agent (Lead)│
+                         │   Lead Event Planner      │
                          └─────────────┬─────────────┘
                                        │
            ┌──────────────┬────────────┴────────────┬──────────────┐
@@ -86,205 +87,159 @@ Traditional tools are either static spreadsheets or simple text chatbots that la
             └─────────────────────────────┘
 ```
 
-### Agent Roles & Responsibilities
-
-| Agent | Responsibility |
-|---|---|
-| **Event Manager Agent** | Decomposes event brief, coordinates domain agents, synthesizes operational master plan, calculates readiness. |
-| **Venue Agent** | Validates room capacity, A/V equipment, Wi-Fi coverage, accessibility, and ranks alternatives. |
-| **Schedule Agent** | Builds chronologies, prevents time collisions, manages slot dependencies, and balances track duration. |
-| **Resource Agent** | Manages hardware inventory (8 categories), tracks allocations, detects shortages, and formulates borrowing vouchers. |
-| **Volunteer Agent** | Directs 5 functional squads, assigns team leads, balances workloads, and reallocates floaters during shortages. |
-| **Conflict Agent** | Deterministic hard-constraint validator detecting venue collisions, capacity overshoots, and inventory deficits. |
-| **Replanning Agent** | 9-step simulation engine for sudden campus disruptions with candidate ranking and Before/After delta comparison. |
-
----
-
-## 💻 Technology Stack
-
-- **Backend:** Python 3.12, FastAPI, Pydantic v2, Uvicorn, Requests, Pytest
-- **Frontend:** HTML5, Modern Vanilla JavaScript (ES6 Modules), Tailwind CSS, Glassmorphism UI
-- **AI Integration:** Dual-mode engine: Google Gemini API / OpenAI API with automatic deterministic semantic NLP fallback (Demo Mode)
-- **Data Layer:** Thread-safe state store with instant reset-to-demo functionality and SQLite persistence
-- **Tunneling:** Node.js live HTTPS tunnel helper (`scripts/start_tunnel.js`)
-
 ---
 
 ## 📂 Project Structure
 
 ```
-campus-orbit/
+/
+├── app/
+│   ├── page.tsx                  # Landing Page (Problem/Solution & Showcase)
+│   ├── dashboard/                # Executive Readiness Dashboard (Gauge & KPIs)
+│   ├── events/                   # Event Intake Studio & NLP Parsing
+│   ├── planning/                 # Multi-Agent Planning Hub & Master Timetable
+│   ├── venues/                   # Campus Venue Management & Suitability
+│   ├── equipment/                # Equipment Inventory & Deficit Warnings
+│   ├── volunteers/               # Volunteer Squads & Roster Balancing
+│   ├── conflicts/                # Conflict Resolution Center (1-Click Fixes)
+│   ├── replan/                   # Dynamic Replanner (Before vs After Delta)
+│   ├── approvals/                # Human-in-the-Loop Ratification Center
+│   ├── tasks/                    # Task Delegation & Automated Checklist
+│   ├── notifications/            # Live Alert Notification Center
+│   ├── briefings/                # Stakeholder Dossiers (Security, Tech, Leads)
+│   ├── system-flow/              # Visual System Flow & Architecture (Judges)
+│   ├── api-docs/                 # Interactive REST API Reference Playground
+│   ├── layout.tsx                # AppShell Layout Container
+│   └── api/                      # Full REST API Route Handlers
+│       ├── health/
+│       ├── events/
+│       ├── planning/
+│       ├── conflicts/
+│       ├── venues/
+│       ├── equipment/
+│       ├── volunteers/
+│       ├── tasks/
+│       ├── checklists/
+│       ├── approvals/
+│       ├── replan/
+│       ├── notifications/
+│       ├── briefings/
+│       └── demo/
 │
-├── README.md                           # Master project documentation
-├── DEMO_GUIDE.md                       # 3-5 Minute judge presentation script
-├── .gitignore                          # Git exclusions (no secrets/temp files)
-├── .env.example                        # Environment template
-├── package.json                        # Node scripts & tunnel helpers
-├── requirements.txt                    # Python dependencies
+├── components/
+│   └── layout/
+│       ├── Navbar.tsx            # Header with Role Switcher & Reset CTA
+│       ├── Sidebar.tsx           # Navigation Sidebar with live status
+│       └── AppShell.tsx          # Responsive Layout Shell
 │
-├── backend/
-│   ├── app.py                          # FastAPI server & route orchestration
-│   ├── config.py                       # App settings & mode configuration
-│   ├── agents/                         # Logical Multi-Agent AI system
-│   │   ├── __init__.py
-│   │   ├── base_agent.py               # Abstract Base Agent
-│   │   ├── event_manager.py            # Master Orchestrator Agent
-│   │   ├── venue_agent.py              # Space & Facilities Optimizer
-│   │   ├── schedule_agent.py           # Temporal & Timeline Orchestrator
-│   │   ├── resource_agent.py           # Hardware Logistics Manager
-│   │   ├── volunteer_agent.py          # Workforce & Squad Coordinator
-│   │   ├── conflict_agent.py           # Hard Constraint Collision Validator
-│   │   └── replanning_agent.py         # 9-Step Dynamic Replanning Engine
-│   ├── models/
-│   │   ├── __init__.py
-│   │   └── schemas.py                  # Pydantic data schemas
-│   ├── services/
-│   │   ├── __init__.py
-│   │   ├── ai_service.py               # Dual-mode AI & NLP parser
-│   │   ├── state_store.py              # In-memory thread-safe state store
-│   │   └── readiness_service.py        # Calculated 8-category readiness index
-│   ├── data/
-│   │   ├── __init__.py
-│   │   └── seed_data.py                # Preloaded campus venues, stock & squads
-│   └── routers/
-│       ├── __init__.py
-│       ├── events.py                   # Event intake & master plan routes
-│       ├── venues.py                   # Venue matrix & status routes
-│       ├── resources.py                # Inventory & shortage routes
-│       ├── volunteers.py               # Volunteer squad routes
-│       ├── schedule.py                 # Timeline & slot routes
-│       ├── conflicts.py                # Conflict detection & resolve routes
-│       ├── tasks.py                    # Checklists & task routes
-│       ├── readiness.py                # Readiness score API
-│       ├── approvals.py                # Governance & human approval routes
-│       ├── simulation.py               # What-If simulation center routes
-│       ├── notifications.py            # Activity alert feeds
-│       └── system.py                   # System status & explainability
+├── lib/
+│   ├── ai/                       # Modular AI service (Deterministic / Gemini)
+│   ├── planner/                  # Intake parser, master planner, replanner
+│   ├── conflict-engine/          # Constraint detector & alternative recommender
+│   ├── database/                 # In-Memory & Prisma unified data layer
+│   └── utils.ts                  # Utility formatting functions
 │
-├── frontend/
-│   ├── index.html                      # Modern SaaS single-page application
-│   ├── css/
-│   │   └── styles.css                  # Modern styling & glassmorphism
-│   └── js/
-│       ├── app.js                      # Master SPA router
-│       ├── api.js                      # REST API client
-│       ├── utils/
-│       │   ├── toast.js                # Toast alert notifications
-│       │   └── explain_modal.js        # "WHY?" explainability modal
-│       └── components/
-│           ├── navbar.js               # Top header & readiness ring
-│           ├── landing.js              # Hero landing page & workflow
-│           ├── dashboard.js            # Live operations dashboard
-│           ├── ai_planner.js           # Natural language event intake
-│           ├── event_plan.js           # Master operational plan
-│           ├── venues.js               # Campus facilities grid
-│           ├── resources.js            # Hardware inventory manager
-│           ├── volunteers.js           # Volunteer squads & shift roster
-│           ├── schedule.js             # Visual run-of-show timeline
-│           ├── conflicts.js            # Collision detection center
-│           ├── simulation.js           # "What If?" Simulation Center
-│           ├── tasks.js                # Task checklists & delegation
-│           ├── readiness.js            # 8-Category readiness audit
-│           ├── approvals.js            # Human-in-the-loop governance
-│           ├── notifications.js        # Real-time event log
-│           └── settings.js             # Runtime configuration
+├── prisma/
+│   └── schema.prisma             # Complete Database schema definition
 │
-├── scripts/
-│   ├── run_app.py                      # Python backend launcher
-│   ├── run_app.bat                     # Windows batch launcher
-│   └── start_tunnel.js                 # Live HTTPS public tunnel helper
+├── tests/
+│   └── campusflow.test.ts        # Comprehensive Vitest unit & integration tests
 │
-└── tests/
-    ├── test_agents.py                  # Multi-agent unit & integration tests
-    └── test_api.py                     # FastAPI endpoint test suite
+├── .env.example                  # Environment variable configuration template
+├── package.json                  # Dependencies and execution scripts
+├── tailwind.config.ts            # Tailwind styling theme
+├── tsconfig.json                 # TypeScript compiler configuration
+└── README.md                     # Documentation & Deployment Guide
 ```
 
 ---
 
-## ⚡ Quick Start & Installation
+## 💻 Local VS Code Execution
 
-### 1. Prerequisites
-- Python 3.10+ (Recommended: Python 3.12)
-- Node.js 18+ (Optional, for public tunnel helper)
+### Prerequisites
+- Node.js v18+ or v20+ installed
+- npm or yarn or pnpm
 
-### 2. Clone Repository & Install Dependencies
+### Step-by-Step Setup Commands
+Execute each command in your VS Code terminal at the root of the project:
+
 ```bash
-# Clone repository
-git clone https://github.com/YOUR_USERNAME/campus-orbit.git
-cd campus-orbit
+# 1. Install all dependencies
+npm install
 
-# Install Python requirements
-pip install -r requirements.txt
-```
+# 2. Setup environment variables (pre-configured for zero-config local run)
+cp .env.example .env.local
 
-### 3. Run Application Locally
-```bash
-# Start backend server
-python scripts/run_app.py
+# 3. Generate Prisma client
+npx prisma generate
 
-# Or on Windows:
-scripts\run_app.bat
+# 4. Push database schema (or use in-memory instant store)
+npx prisma db push
+
+# 5. Start development server
+npm run dev
 ```
 
 Open your browser and navigate to:
-- **Web Application:** `http://127.0.0.1:8000`
-- **Interactive Swagger API Docs:** `http://127.0.0.1:8000/docs`
+- **Web Application**: [http://localhost:3000](http://localhost:3000)
+- **API Health Check**: [http://localhost:3000/api/health](http://localhost:3000/api/health)
+- **API Playground**: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
 ---
 
-## 🌐 Public Tunnel Instructions (For Judges & Mentors)
+## 🧪 Automated Testing
 
-To generate a live, shareable public HTTPS link for remote hackathon judges:
-
-```bash
-# In a separate terminal:
-npm run tunnel
-# OR:
-node scripts/start_tunnel.js
-```
-The script will output a real, active HTTPS URL (e.g., `https://campus-orbit-demo.loca.lt`).
-
----
-
-## 🧪 Running Automated Tests
-
-Campus Orbit comes with a complete test suite covering all 7 agents and API routes:
+CampusFlow AI includes a full test suite validating NLP intake parsing, conflict detection, hardware shortage alerts, dynamic replanning deltas, and approval state transitions:
 
 ```bash
-pytest tests/ -v
+npm test
 ```
 
 ---
 
-## 📖 3-Minute Demo Walkthrough
+## 🌐 Permanent Public Deployment (Vercel + Neon PostgreSQL)
 
-1. **Intake Event Requirements:** Navigate to `#ai-planner`, load the sample prompt (*"2-day AI hackathon for 300 students..."*), click **Extract Requirements**, and click **GENERATE EVENT PLAN**.
-2. **Review Operational Plan:** Navigate to `#event-plan` to inspect allocated venues, chronological run-of-show, equipment matrices, and AI consensus rationales.
-3. **Inspect Conflicts:** Navigate to `#conflicts` to observe the Main Auditorium double-booking and click **APPLY RECOMMENDATION** to automatically relocate the guest lecture to Innovation Hall.
-4. **Simulate Disruption (The Showcase Feature):** Navigate to `#simulation` (Simulation Center / What If?). Click **"Main Auditorium Becomes Unavailable"**.
-   - Watch the **9-stage multi-agent pipeline** execute.
-   - Inspect the **BEFORE vs AFTER** visual comparison card.
-   - Click **Why this selection?** to see the explainability modal.
-   - Click **APPLY APPROVED REVISED PLAN** to commit the changes live!
-5. **Verify Live Updates:** Navigate to `#schedule` and `#readiness` to see updated venue assignments and recalculated readiness scores.
+CampusFlow AI is designed for permanent public HTTPS deployment.
 
----
-
-## 🛠️ GitHub Push Commands
-
+### 1. Push to GitHub
 ```bash
 git init
 git add .
-git commit -m "Initial Campus Orbit project - CSE Hackathon 2026"
+git commit -m "feat: complete CampusFlow AI agentic platform"
 git branch -M main
-git remote add origin YOUR_GITHUB_REPOSITORY_URL
+git remote add origin https://github.com/YOUR_USERNAME/campusflow-ai.git
 git push -u origin main
 ```
 
+### 2. Create Cloud Database (Neon PostgreSQL)
+1. Go to [Neon.tech](https://neon.tech) and create a free serverless PostgreSQL database.
+2. Copy the Connection String:
+   `postgresql://user:password@ep-sample.aws.neon.tech/campusflow?sslmode=require`
+
+### 3. Deploy to Vercel
+1. Go to [Vercel](https://vercel.com) and click **Add New Project**.
+2. Select your `campusflow-ai` repository.
+3. In **Environment Variables**, add:
+   - `DATABASE_URL`: your Neon connection string.
+   - `AI_PROVIDER`: `deterministic` (or `gemini` with `GEMINI_API_KEY`).
+4. Click **Deploy**.
+5. Your app will be live at a permanent URL like `https://campusflow-ai.vercel.app`.
+
 ---
 
-## 🏆 Hackathon Team Contribution
-- **Project:** CAMPUS ORBIT
-- **Hackathon:** CSE Hackathon 2026
-- **Domain:** College / Campus Operations / Multi-Agent AI
-- **Tagline:** *"Plan smarter. Coordinate automatically. Adapt instantly."*
+## 🎯 Hackathon Demonstration Guide
+
+For live presentation to judges, follow this recommended walkthrough:
+
+1. **Landing Page (`/`)**: Show the problem statement, autonomous multi-agent architecture, and click **"Launch Platform"**.
+2. **Readiness Dashboard (`/dashboard`)**: Explain the calculated 84% readiness gauge, 1 active conflict in Seminar Hall A, and pending human approvals.
+3. **Conflict Resolution (`/conflicts`)**: Show the detected collision in Seminar Hall A. Click **"Apply Alternative"** (Seminar Hall B) to demonstrate instant resolution.
+4. **"What-If" Dynamic Replanning (`/replan`)**: Click **"⚡ Simulate Venue Failure"**. Watch the autonomous 9-step pipeline execute and present the **BEFORE → AFTER** comparison table.
+5. **Human Approvals (`/approvals`)**: Switch role to *Security Officer*, click **"Approve & Sign"** on the Night Hackathon clearance, and observe readiness update.
+6. **Tasks & Checklists (`/tasks`)**: Tick off checklist items and watch the readiness gauge recalculate in real time.
+7. **System Flow (`/system-flow`)**: Walk the judges through the 12-stage operational lifecycle and multi-tier tech stack.
+
+---
+
+## 📄 License
+MIT License. Built for the CSE Hackathon 2026.
