@@ -14,7 +14,7 @@ import os
 import json
 import mimetypes
 from typing import Dict, Any, List, Optional
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from dataclasses import asdict
 from core.database import db
@@ -37,6 +37,8 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
             file_rel = path.lstrip("/")
             mime_type, _ = mimetypes.guess_type(file_rel)
             self._serve_static_file(file_rel, mime_type or "application/octet-stream")
+        elif path in ["/api/all", "/api/master", "/api/urls", "/api/everything"]:
+            self._send_json(self._get_master_all_payload())
         elif path == "/api/dashboard":
             self._send_json(self._get_dashboard_payload())
         elif path == "/api/events":
@@ -90,14 +92,58 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                 "authenticated": user is not None,
                 "user": asdict(user) if user else None
             })
-        elif path == "/api/settings":
+        elif path == "/api/docs":
             self._send_json({
-                "app_name": "CAMPUS ORBIT",
-                "tagline": "Plan smarter. Coordinate automatically. Adapt instantly.",
-                "demo_mode": True,
-                "version": "1.0.0-hackathon",
-                "agents_active": 8,
-                "status": "Operational"
+                "openapi": "3.0.0",
+                "info": {
+                    "title": "Campus Orbit API",
+                    "description": "AI-Powered Campus Event Planning & Real-Time Coordination Operations Engine",
+                    "version": "1.0.0"
+                },
+                "endpoints": {
+                    "GET /api/dashboard": "Executive dashboard KPIs, active events, and readiness index",
+                    "GET /api/events/catalog": "9-Event competition arena with prizes (₹3k–₹10k) and certificates",
+                    "GET /api/participants": "List of registered attendees and QR pass metadata",
+                    "POST /api/participants/register": "Register new participant and generate SVG QR code pass",
+                    "POST /api/checkin/scan": "Scan QR string / Participant ID and mark attendance",
+                    "GET /api/checkin/stats": "Live registration & gate check-in statistics",
+                    "POST /api/chatbot/message": "Query Orbit AI for venue suggestions, volunteers, and conflicts",
+                    "GET /api/chatbot/history": "Retrieve recent multi-turn chat history",
+                    "GET /api/venues": "Campus venue inventory with capacities and AV equipment",
+                    "GET /api/resources": "Equipment inventory, borrowed units, and shortages",
+                    "GET /api/volunteers": "Volunteer roster and squad allocations",
+                    "GET /api/schedule": "Milestone timetable and master run of show",
+                    "GET /api/tasks": "Task delegation with Kanban statuses and priorities",
+                    "GET /api/conflicts": "Detected constraint clashes and resolution recommendations",
+                    "GET /api/approvals": "Governance clearance workflow and status",
+                    "POST /api/generate-plan": "Generate end-to-end event plan from natural language prompt",
+                    "POST /api/simulation/trigger": "Simulate campus disruption scenario (e.g. venue blackout)",
+                    "POST /api/simulation/apply": "Apply dynamic AI replanning recommendations",
+                    "GET /api/code": "Project architecture metadata and codebase details"
+                }
+            })
+        elif path == "/api/code":
+            self._send_json({
+                "project": "Campus Orbit AI",
+                "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
+                "public_url": "https://campus-orbit-ai.loca.lt",
+                "local_url": "http://127.0.0.1:8000",
+                "architecture": {
+                    "backend": "Python 3.12 (HTTP Server, REST API, Rule Engine, Multi-Agent Orchestrator)",
+                    "frontend": "Modern Responsive SPA (HTML5, Vanilla CSS3 Glassmorphism, Pure SVG QR Generator)",
+                    "agents": [
+                        "Intake / Requirement Parser Agent",
+                        "Venue Allocation & Capacity Matcher Agent",
+                        "Resource & Equipment Optimization Agent",
+                        "Volunteer Allocation & Squad Coordinator Agent",
+                        "Schedule & Timetable Sequencer Agent",
+                        "Task Delegation & Dependency Tracker Agent",
+                        "Constraint & Clash Detection Agent",
+                        "Governance & Approval Routing Agent",
+                        "Dynamic Disruption Replanning Agent",
+                        "Orbit AI Conversational Operations Assistant"
+                    ]
+                }
             })
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
@@ -243,6 +289,74 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
 
+    def _get_master_all_payload(self) -> Dict[str, Any]:
+        """Consolidates ALL public Web URLs, REST API endpoints, and live data snapshots into one response."""
+        base_url = "https://campus-orbit-ai.loca.lt"
+        local_url = "http://127.0.0.1:8000"
+        stats = db.get_registration_stats()
+        readiness = db.calculate_readiness()
+
+        return {
+            "status": "success",
+            "project": {
+                "name": "CAMPUS ORBIT",
+                "tagline": "AI-Powered Campus Event Planning & Real-Time Dynamic Coordination Operations Agent",
+                "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
+                "public_app_url": base_url,
+                "local_app_url": local_url,
+                "master_api_url": f"{base_url}/api/all"
+            },
+            "all_web_urls": {
+                "dashboard": f"{base_url}/#dashboard",
+                "events_arena_and_prizes": f"{base_url}/#events",
+                "participant_registration_and_qr": f"{base_url}/#registration",
+                "qr_live_attendance_checkin": f"{base_url}/#checkin",
+                "orbit_ai_chatbot": f"{base_url}/#chatbot",
+                "dynamic_what_if_simulator": f"{base_url}/#simulation",
+                "venues_and_capacity": f"{base_url}/#venues",
+                "resources_and_inventory": f"{base_url}/#resources",
+                "volunteers_and_squads": f"{base_url}/#volunteers",
+                "schedule_timetable": f"{base_url}/#schedule",
+                "tasks_and_kanban": f"{base_url}/#tasks",
+                "conflicts_and_constraints": f"{base_url}/#conflicts",
+                "governance_and_approvals": f"{base_url}/#approvals",
+                "auth_login_signup": f"{base_url}/#auth"
+            },
+            "all_api_urls": {
+                "master_consolidated_api": f"{base_url}/api/all",
+                "api_docs": f"{base_url}/api/docs",
+                "code_architecture_api": f"{base_url}/api/code",
+                "dashboard_api": f"{base_url}/api/dashboard",
+                "events_catalog_api": f"{base_url}/api/events/catalog",
+                "participants_list_api": f"{base_url}/api/participants",
+                "register_participant_api": f"{base_url}/api/participants/register",
+                "checkin_scan_api": f"{base_url}/api/checkin/scan",
+                "checkin_stats_api": f"{base_url}/api/checkin/stats",
+                "chatbot_message_api": f"{base_url}/api/chatbot/message",
+                "chatbot_history_api": f"{base_url}/api/chatbot/history",
+                "venues_api": f"{base_url}/api/venues",
+                "resources_api": f"{base_url}/api/resources",
+                "volunteers_api": f"{base_url}/api/volunteers",
+                "schedule_api": f"{base_url}/api/schedule",
+                "tasks_api": f"{base_url}/api/tasks",
+                "conflicts_api": f"{base_url}/api/conflicts",
+                "approvals_api": f"{base_url}/api/approvals",
+                "generate_plan_api": f"{base_url}/api/generate-plan",
+                "simulation_trigger_api": f"{base_url}/api/simulation/trigger",
+                "simulation_apply_api": f"{base_url}/api/simulation/apply"
+            },
+            "live_summary": {
+                "total_events": len(db.events_catalog),
+                "total_registered": stats["total_registered"],
+                "total_checked_in": stats["total_checked_in"],
+                "attendance_rate": f"{stats['checkin_rate']}%",
+                "readiness_score": f"{readiness['overall']}%",
+                "active_conflicts": sum(1 for c in db.conflicts if not c.resolved),
+                "pending_approvals": sum(1 for a in db.approvals if a.status.value == "Pending"),
+                "total_volunteers": len(db.volunteers)
+            }
+        }
+
     def _get_dashboard_payload(self) -> Dict[str, Any]:
         """Generates executive dashboard overview."""
         readiness = db.calculate_readiness()
@@ -299,7 +413,7 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
 
 def run_server(port: int = 8000):
     server_address = ("0.0.0.0", port)
-    httpd = HTTPServer(server_address, CampusOrbitHTTPHandler)
+    httpd = ThreadingHTTPServer(server_address, CampusOrbitHTTPHandler)
     print("=" * 80)
     print(" 🚀 CAMPUS ORBIT - AI Event Operations & Dynamic Replanning Platform")
     print("    Tagline: 'Plan smarter. Coordinate automatically. Adapt instantly.'")

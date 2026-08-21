@@ -1,0 +1,24 @@
+{
+  "name": "campus-orbit",
+  "version": "1.0.0",
+  "description": "Campus Orbit - AI Campus Event Planning & Coordination Multi-Agent Platform",
+  "main": "scripts/start_tunnel.js",
+  "scripts": {
+    "start": "python scripts/run_app.py",
+    "tunnel": "node scripts/start_tunnel.js",
+    "test": "pytest tests/ -v"
+  },
+  "keywords": [
+    "multi-agent-ai",
+    "event-management",
+    "campus-operations",
+    "hackathon",
+    "fastapi",
+    "dynamic-replanning"
+  ],
+  "author": "Campus Orbit Team",
+  "license": "MIT",
+  "devDependencies": {
+    "localtunnel": "^2.0.2"
+  }
+}
