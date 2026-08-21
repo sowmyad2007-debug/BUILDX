@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMPUS ORBIT | AI-Powered Campus Event Planning & Coordination Agent</title>
+  <meta name="description" content="Plan smarter. Coordinate automatically. Adapt instantly. Enterprise multi-agent campus operations platform.">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- App Wrapper -->
+  <div class="app-layout">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+      <!-- Brand Header -->
+      <div class="sidebar-brand" onclick="navigateTo('landing')">
+        <div class="brand-logo-icon">🪐</div>
+        <div class="brand-text">
+          <div class="brand-title">CAMPUS ORBIT</div>
+          <div class="brand-tagline">AI Event Operations</div>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Operations</div>
+        <a href="#dashboard" class="nav-link active" data-view="dashboard" onclick="navigateTo('dashboard')">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#events" class="nav-link" data-view="events" onclick="navigateTo('events')">
+          <span class="nav-icon">🎪</span>
+          <span class="nav-text">Events Catalog</span>
+          <span class="nav-pill" id="navActiveEventBadge">9 Events</span>
+        </a>
+        <a href="#planner" class="nav-link" data-view="planner" onclick="navigateTo('planner')">
+          <span class="nav-icon">✨</span>
+          <span class="nav-text">AI Planner</span>
+          <span class="nav-pill nav-pill-ai">Agentic</span>
+        </a>
+        <a href="#simulation" class="nav-link nav-link-special" data-view="simulation" onclick="navigateTo('simulation')">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-text">What If? Simulator</span>
+          <span class="nav-pill nav-pill-warn">Replanner</span>
+        </a>
+
+        <div class="nav-section-label">Attendance & Engagement</div>
+        <a href="#registration" class="nav-link" data-view="registration" onclick="navigateTo('registration')">
+          <span class="nav-icon">📝</span>
+          <span class="nav-text">Registration</span>
+          <span class="nav-pill" id="navRegBadge">10+ Reg</span>
+        </a>
+        <a href="#checkin" class="nav-link" data-view="checkin" onclick="navigateTo('checkin')">
+          <span class="nav-icon">🎟️</span>
+          <span class="nav-text">QR Check-In</span>
+          <span class="nav-pill nav-pill-ai" id="navCheckinBadge">Live Scan</span>
+        </a>
+        <a href="#chatbot" class="nav-link" data-view="chatbot" onclick="navigateTo('chatbot')">
+          <span class="nav-icon">💬</span>
+          <span class="nav-text">Orbit AI Chat</span>
+          <span class="nav-pill nav-pill-ai">Assistant</span>
+        </a>
+
+        <div class="nav-section-label">Resource Management</div>
+        <a href="#venues" class="nav-link" data-view="venues" onclick="navigateTo('venues')">
+          <span class="nav-icon">🏛️</span>
+          <span class="nav-text">Venues</span>
+          <span class="nav-pill" id="navVenueCount">8</span>
+        </a>
+        <a href="#resources" class="nav-link" data-view="resources" onclick="navigateTo('resources')">
+          <span class="nav-icon">📦</span>
+          <span class="nav-text">Resources</span>
+          <span class="nav-pill" id="navResourceShortageBadge">1 Short</span>
+        </a>
+        <a href="#volunteers" class="nav-link" data-view="volunteers" onclick="navigateTo('volunteers')">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">Volunteers</span>
+          <span class="nav-pill">20 Roster</span>
+        </a>
+        <a href="#schedule" class="nav-link" data-view="schedule" onclick="navigateTo('schedule')">
+          <span class="nav-icon">📅</span>
+          <span class="nav-text">Schedule</span>
+        </a>
+
+        <div class="nav-section-label">Governance & Readiness</div>
+        <a href="#tasks" class="nav-link" data-view="tasks" onclick="navigateTo('tasks')">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Tasks</span>
+          <span class="nav-pill" id="navTaskDueCount">5 Due</span>
+        </a>
+        <a href="#conflicts" class="nav-link" data-view="conflicts" onclick="navigateTo('conflicts')">
+          <span class="nav-icon">⚠️</span>
+          <span class="nav-text">Conflicts</span>
+          <span class="nav-pill nav-pill-danger" id="navConflictCount">2</span>
+        </a>
+        <a href="#approvals" class="nav-link" data-view="approvals" onclick="navigateTo('approvals')">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-text">Approvals</span>
+          <span class="nav-pill nav-pill-warn" id="navApprovalCount">4</span>
+        </a>
+        <a href="#notifications" class="nav-link" data-view="notifications" onclick="navigateTo('notifications')">
+          <span class="nav-icon">🔔</span>
+          <span class="nav-text">Notifications</span>
+          <span class="nav-pill" id="navNotifCount">4</span>
+        </a>
+        <a href="#settings" class="nav-link" data-view="settings" onclick="navigateTo('settings')">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Settings</span>
+        </a>
+        <a href="#auth" class="nav-link" data-view="auth" onclick="navigateTo('auth')">
+          <span class="nav-icon">🔐</span>
+          <span class="nav-text">Account & Access</span>
+        </a>
+      </nav>
+
+      <!-- Bottom Brand Footer -->
+      <div class="sidebar-footer">
+        <div class="footer-badge">
+          <span class="status-dot online"></span>
+          <span>7 AI Sub-Agents Online</span>
+        </div>
+        <div class="footer-brand-tag">
+          <strong>CAMPUS ORBIT</strong>
+          <span>AI Event Operations</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT AREA ==================== -->
+    <div class="main-wrapper">
+
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-icon-toggle mobile-only" onclick="toggleMobileSidebar()">☰</button>
+          <div class="breadcrumbs" id="topBreadcrumbs">Dashboard / Executive Overview</div>
+        </div>
+        <div class="header-right">
+          <div class="demo-badge">
+            <span class="badge-dot"></span>
+            <span>DEMO MODE ACTIVE</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="navigateTo('landing')">🚀 Landing Page</button>
+          <button class="btn btn-primary btn-sm" onclick="navigateTo('planner')">+ Create Event</button>
+          
+          <!-- User Profile & Auth Trigger -->
+          <div class="user-profile-badge" id="topUserProfileBadge" onclick="navigateTo('auth')">
+            <div class="avatar" id="topUserAvatar">PN</div>
+            <div class="user-meta">
+              <span class="user-name" id="topUserName">Priya Nair</span>
+              <span class="user-role" id="topUserRole">Event Manager</span>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm btn-logout" id="topBtnLogout" onclick="promptLogout()" title="Sign Out">
+            <span>🚪 Sign Out</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Container -->
+      <main class="content-body">
+
+        <!-- ==================== VIEW 0: LANDING PAGE ==================== -->
+        <section class="view-panel" id="view-landing" style="display: none;">
+          <div class="landing-hero">
+            <div class="landing-badge">🪐 ENTERPRISE MULTI-AGENT CAMPUS AI</div>
+            <h1 class="landing-title">CAMPUS ORBIT</h1>
+            <p class="landing-tagline">"Plan smarter. Coordinate automatically. Adapt instantly."</p>
+            <p class="landing-desc">
+              An agentic AI platform that transforms natural-language campus event requirements into executable operational plans, validates hard constraints, coordinates volunteer & equipment resources, and dynamically replans in real time when disruptions occur.
+            </p>
+            <div class="landing-cta-row">
+              <button class="btn btn-primary btn-lg" onclick="navigateTo('planner')">✨ Try AI Event Planner</button>
+              <button class="btn btn-outline btn-lg" onclick="navigateTo('dashboard')">📊 View Demo Dashboard</button>
+              <button class="btn btn-special btn-lg" onclick="navigateTo('simulation')">⚡ Test "What If?" Simulator</button>
+            </div>
+          </div>
+
+          <!-- Visual Workflow Diagram -->
+          <div class="workflow-section">
+            <h3 class="section-title text-center">Autonomous Multi-Agent Event Architecture</h3>
+            <div class="workflow-steps-grid">
+              <div class="wf-card">
+                <div class="wf-icon">📝</div>
+                <h4>1. NLP Intake</h4>
+                <p>Natural language requirement parser extracts participants, dates, venues, equipment & permissions.</p>
+              </div>
+              <div class="wf-arrow">➔</div>
+              <div class="wf-card">
+                <div class="wf-icon">🧠</div>
+                <h4>2. Agent Swarm</h4>
+                <p>Venue, Schedule, Resource & Volunteer agents match infrastructure and calculate optimal allocations.</p>
+              </div>
+              <div class="wf-arrow">➔</div>
+              <div class="wf-card">
+                <div class="wf-icon">⚠️</div>
+                <h4>3. Conflict Engine</h4>
+                <p>Deterministic checks detect timetable overlaps, equipment shortages, and noise curfews.</p>
+              </div>
+              <div class="wf-arrow">➔</div>
+              <div class="wf-card">
+                <div class="wf-icon">🛡️</div>
+                <h4>4. Governance (HITL)</h4>
+                <p>Human-in-the-loop sign-offs for budgets >$1500, overnight lab access & VIP protocols.</p>
+              </div>
+              <div class="wf-arrow">➔</div>
+              <div class="wf-card wf-card-highlight">
+                <div class="wf-icon">⚡</div>
+                <h4>5. Dynamic Replanning</h4>
+                <p>Simulate venue breakdowns or speaker delays: AI recalculates and adapts the operational plan instantly.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 1: EXECUTIVE DASHBOARD ==================== -->
+        <section class="view-panel active" id="view-dashboard">
+          <!-- Top Greeting & Header -->
+          <div class="dashboard-greeting-bar">
+            <div>
+              <h2 class="greeting-heading">Good morning, Event Manager</h2>
+              <p class="greeting-sub">Here is the real-time operational status for your campus events, live registrations, QR attendance, and readiness health.</p>
+            </div>
+            <div class="greeting-actions">
+              <button class="btn btn-outline" onclick="navigateTo('registration')">📝 New Registration</button>
+              <button class="btn btn-special" onclick="navigateTo('checkin')">🎟️ QR Scanner</button>
+              <button class="btn btn-primary" onclick="navigateTo('chatbot')">💬 Ask Orbit AI</button>
+            </div>
+          </div>
+
+          <!-- 8 High-Impact KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card" onclick="navigateTo('events')">
+              <div class="kpi-icon-box bg-blue">🎪</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Campus Events</div>
+                <div class="kpi-value" id="kpiUpcomingEvents">9</div>
+                <div class="kpi-hint">Cash Prizes & Certificates</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('registration')">
+              <div class="kpi-icon-box bg-purple">📝</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Total Registered</div>
+                <div class="kpi-value text-primary" id="kpiTotalRegistered">10</div>
+                <div class="kpi-hint">Across 9 Competitions</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('checkin')">
+              <div class="kpi-icon-box bg-cyan">🎟️</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Checked In (Live)</div>
+                <div class="kpi-value text-success" id="kpiTotalCheckedIn">6 (60%)</div>
+                <div class="kpi-hint">QR Gate Attendance</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('conflicts')">
+              <div class="kpi-icon-box bg-red">⚠️</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Active Conflicts</div>
+                <div class="kpi-value text-danger" id="kpiActiveConflicts">2</div>
+                <div class="kpi-hint">1 Critical Venue Clash</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('approvals')">
+              <div class="kpi-icon-box bg-amber">🛡️</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Pending Approvals</div>
+                <div class="kpi-value text-warning" id="kpiPendingApprovals">4</div>
+                <div class="kpi-hint">Budget & Dean Clearances</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('tasks')">
+              <div class="kpi-icon-box bg-purple">📋</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Tasks Due Today</div>
+                <div class="kpi-value" id="kpiTasksDue">5</div>
+                <div class="kpi-hint">3 In-Progress, 2 Pending</div>
+              </div>
+            </div>
+            <div class="kpi-card" onclick="navigateTo('chatbot')">
+              <div class="kpi-icon-box bg-blue">💬</div>
+              <div class="kpi-content">
+                <div class="kpi-label">Orbit AI Assistant</div>
+                <div class="kpi-value text-primary" id="kpiChatQueries">7</div>
+                <div class="kpi-hint">Multi-Agent Intelligence</div>
+              </div>
+            </div>
+            <div class="kpi-card kpi-readiness-card">
+              <div class="kpi-radial-wrapper">
+                <div class="kpi-radial-ring" id="dashboardRadialRing">
+                  <span class="kpi-radial-num" id="kpiReadinessScore">82%</span>
+                </div>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-label">Overall Readiness</div>
+                <div class="kpi-badge-status" id="kpiReadinessLabel">Operational Draft</div>
+                <div class="kpi-hint">Calculated dynamically</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Dashboard Split Grid -->
+          <div class="grid-layout-2col mt-4">
+            
+            <!-- Left: Active Event Spotlight & Readiness Breakdown -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">🌟</span>
+                  <h3>Active Event Spotlight: AI Innovation Hackathon</h3>
+                </div>
+                <span class="badge badge-primary">Grand Flagship</span>
+              </div>
+              <div class="event-spotlight-body">
+                <div class="spotlight-meta-grid">
+                  <div class="sm-item"><span>Dates:</span> <strong>Aug 28–29, 2026</strong></div>
+                  <div class="sm-item"><span>Footfall:</span> <strong>300 Participants</strong></div>
+                  <div class="sm-item"><span>Primary Venue:</span> <strong>Main Auditorium + 3 CSE Labs</strong></div>
+                  <div class="sm-item"><span>Prize Pool:</span> <strong class="text-warning">🥇 ₹10,000 🥈 ₹6,000 🥉 ₹4,000</strong></div>
+                  <div class="sm-item"><span>Certificates:</span> <strong class="text-success">Guaranteed for All</strong></div>
+                  <div class="sm-item"><span>Live Attendance:</span> <strong class="text-primary" id="dashAttendanceRate">60% Checked In</strong></div>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <!-- 8-Category Readiness Breakdown Progress Bars -->
+                <h4 class="sub-section-title">Campus Readiness by Category</h4>
+                <div class="readiness-categories-grid" id="dashboardReadinessBars">
+                  <!-- Dynamically Rendered by JS -->
+                </div>
+
+                <div class="spotlight-actions mt-3">
+                  <button class="btn btn-sm btn-outline" onclick="navigateTo('registration')">📝 Register</button>
+                  <button class="btn btn-sm btn-outline" onclick="navigateTo('checkin')">🎟️ QR Scanner</button>
+                  <button class="btn btn-sm btn-primary" onclick="navigateTo('simulation')">⚡ Test Disruption Replanning</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Live Activity Stream & Priority Alerts -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">🔔</span>
+                  <h3>Real-time Alerts & Operations Feed</h3>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="navigateTo('notifications')">View All</button>
+              </div>
+              <div class="notifications-feed-list" id="dashboardNotifList">
+                <!-- Dynamically Rendered by JS -->
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 2: EVENTS CATALOG WITH PRIZES & CERTIFICATES ==================== -->
+        <section class="view-panel" id="view-events" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>🎪 Campus Event Arena & Competitions</h2>
+              <p class="view-subtitle">Explore all 9 campus technical events with exact dates, cash prizes (Max: ₹10,000 | Min: ₹3,000), and rules. Verifiable participation certificates for all!</p>
+            </div>
+            <div class="greeting-actions">
+              <button class="btn btn-outline" onclick="navigateTo('registration')">📝 Participant Registration</button>
+              <button class="btn btn-primary" onclick="navigateTo('planner')">+ AI Event Planner</button>
+            </div>
+          </div>
+
+          <!-- Event Filter Tabs -->
+          <div class="filter-pills mb-3">
+            <button class="pill-btn active" onclick="filterEventCatalog('all')">All Events (9)</button>
+            <button class="pill-btn" onclick="filterEventCatalog('hackathon')">Hackathons & Coding</button>
+            <button class="pill-btn" onclick="filterEventCatalog('competitions')">Arena & Contests</button>
+            <button class="pill-btn" onclick="filterEventCatalog('summits')">Summits & Podcasts</button>
+          </div>
+
+          <div class="events-catalog-grid" id="eventsCatalogGrid">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 2B: PARTICIPANT REGISTRATION ==================== -->
+        <section class="view-panel" id="view-registration" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>📝 Participant Registration & Digital Pass</h2>
+              <p class="view-subtitle">Register attendees for campus events, generate unique QR entry credentials, and issue instant confirmation passes.</p>
+            </div>
+            <button class="btn btn-outline" onclick="navigateTo('checkin')">🎟️ Go to QR Check-In</button>
+          </div>
+
+          <div class="grid-layout-2col">
+            <!-- Left: Registration Form -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">✍️</span>
+                  <h3>Attendee Registration Form</h3>
+                </div>
+                <span class="badge badge-success">Instant QR Generation</span>
+              </div>
+
+              <form id="formParticipantRegistration" onsubmit="handleParticipantRegister(event)">
+                <div class="input-group">
+                  <label class="input-label" for="regFullName">Full Name:</label>
+                  <input type="text" id="regFullName" class="entity-input" required placeholder="e.g. Ananya Sharma" />
+                </div>
+
+                <div class="grid-layout-2col mt-2">
+                  <div class="input-group">
+                    <label class="input-label" for="regEmail">Email Address:</label>
+                    <input type="email" id="regEmail" class="entity-input" required placeholder="ananya.sharma@campus.edu" />
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label" for="regPhone">Phone Number:</label>
+                    <input type="tel" id="regPhone" class="entity-input" required placeholder="+91-98765-43210" />
+                  </div>
+                </div>
+
+                <div class="grid-layout-2col mt-2">
+                  <div class="input-group">
+                    <label class="input-label" for="regCollege">College / Institution:</label>
+                    <input type="text" id="regCollege" class="entity-input" required placeholder="e.g. National Institute of Technology" />
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label" for="regDept">Department & Year:</label>
+                    <input type="text" id="regDept" class="entity-input" required placeholder="e.g. Computer Science - Year 3" />
+                  </div>
+                </div>
+
+                <div class="input-group mt-2">
+                  <label class="input-label" for="regEventSelect">Event Selection & Date:</label>
+                  <select id="regEventSelect" class="entity-input select-input" required>
+                    <option value="EVT-HACK">AI Innovation Hackathon — 📅 Aug 28-29, 2026 (🥇 ₹10,000 | Main Auditorium)</option>
+                    <option value="EVT-QUESTX">AI QuestX — 📅 Aug 28, 2026 (🥇 ₹9,000 | SAC & Greens)</option>
+                    <option value="EVT-COMBAT">AI Prompt Combat — 📅 Aug 28, 2026 (🥇 ₹9,000 | CSE Lab 1)</option>
+                    <option value="EVT-JAM">JAM Session (Just A Minute) — 📅 Aug 28, 2026 (🥇 ₹8,000 | Seminar Hall)</option>
+                    <option value="EVT-EXPO">AI Expo & Innovation Showcase — 📅 Aug 29, 2026 (🥇 ₹10,000 | Innovation Hall)</option>
+                    <option value="EVT-QUIZ">AI QUIZ — 📅 Aug 29, 2026 (🥇 ₹9,000 | Convention Hall)</option>
+                    <option value="EVT-POSTER">AI Poster Design — 📅 Aug 28, 2026 (🥇 ₹8,000 | Exhibition Gallery)</option>
+                    <option value="EVT-PODCAST">Podcast with Industrial Professionals — 📅 Aug 29, 2026 (🥇 ₹8,000 | Media Suite)</option>
+                    <option value="EVT-SUMMIT">Industry Innovation Summit — 📅 Aug 29, 2026 (🥇 ₹10,000 | Main Auditorium)</option>
+                  </select>
+                </div>
+
+                <div class="auth-alert success mt-2" style="display:block;">
+                  📜 <strong>Participation Certificate Guaranteed</strong>: All registered participants receive a verifiable digital participation certificate and entry into prize pool rankings!
+                </div>
+
+                <div class="mt-3">
+                  <button type="submit" class="btn btn-primary btn-block btn-lg" id="btnSubmitRegistration">
+                    🎟️ Register & Generate Unique QR Entry Pass
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right: Generated Digital QR Ticket Pass -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">🎟️</span>
+                  <h3>Digital QR Entry Pass</h3>
+                </div>
+                <span class="badge badge-accent" id="regTicketBadge">Pass Ready</span>
+              </div>
+
+              <div class="digital-ticket-container" id="digitalTicketContainer">
+                <div class="ticket-card">
+                  <div class="ticket-header">
+                    <div class="ticket-logo">🪐 CAMPUS ORBIT PASS</div>
+                    <div class="ticket-status-pill" id="ticketStatusPill">✓ REGISTERED</div>
+                  </div>
+                  
+                  <div class="ticket-body">
+                    <div class="ticket-qr-box" id="ticketQRBox">
+                      <!-- SVG QR Code dynamically injected -->
+                    </div>
+                    
+                    <div class="ticket-details">
+                      <h3 class="ticket-name" id="ticketName">Rohan Verma</h3>
+                      <div class="ticket-reg-id" id="ticketRegId">ID: REG-1001</div>
+                      
+                      <div class="ticket-meta-grid">
+                        <div><span>Event:</span> <strong id="ticketEventName">AI Innovation Hackathon</strong></div>
+                        <div><span>Institution:</span> <strong id="ticketCollege">IIT Delhi</strong></div>
+                        <div><span>Dept:</span> <strong id="ticketDept">Computer Science</strong></div>
+                        <div><span>Entry Gate:</span> <strong>Main Entrance Gate A</strong></div>
+                        <div><span>Certificate:</span> <strong class="text-success">Eligible (All Attendees)</strong></div>
+                        <div><span>Attendance:</span> <strong id="ticketCheckinStatus" class="text-success">Checked In (09:12 AM)</strong></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-footer">
+                    <button class="btn btn-sm btn-outline" onclick="window.print()">🖨️ Print Ticket</button>
+                    <button class="btn btn-sm btn-special" id="btnTestCheckInTicket" onclick="testCheckInCurrentTicket()">⚡ Test Scan This QR</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 2C: QR EVENT CHECK-IN SYSTEM ==================== -->
+        <section class="view-panel" id="view-checkin" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>🎟️ QR Event Entry & Live Attendance Scanner</h2>
+              <p class="view-subtitle">Scan attendee QR passes at security gates, verify identity, mark attendance automatically, and monitor live footfall.</p>
+            </div>
+            <div class="greeting-actions">
+              <button class="btn btn-outline" onclick="navigateTo('registration')">+ New Registration</button>
+              <button class="btn btn-primary" onclick="simulateRandomCheckIn()">🎲 Scan Random Attendee</button>
+            </div>
+          </div>
+
+          <!-- Scanner & Stats Grid -->
+          <div class="grid-layout-2col">
+            
+            <!-- Left: QR Scanner Camera Simulator -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">📷</span>
+                  <h3>Live QR Code Scanner / Entry Gate</h3>
+                </div>
+                <span class="badge badge-success">Gate A Active</span>
+              </div>
+
+              <div class="scanner-camera-box">
+                <div class="scanner-laser"></div>
+                <div class="scanner-crosshair"></div>
+                <div class="scanner-prompt-text">Align Attendee QR Code within frame</div>
+              </div>
+
+              <!-- Manual / Barcode Scanner Input -->
+              <div class="mt-3">
+                <label class="input-label" for="scanInput">Enter Participant ID or Scanned QR String:</label>
+                <div class="scanner-input-row">
+                  <input type="text" id="scanInput" class="entity-input" placeholder="e.g. REG-1003 or ORBIT:REG-1003:AI_QUESTX..." />
+                  <button class="btn btn-primary" onclick="handleScanSubmit()">⚡ Scan & Verify</button>
+                </div>
+              </div>
+
+              <!-- Scan Result Feedback Alert -->
+              <div id="scanFeedbackBox" class="auth-alert success mt-3" style="display: none;">
+                <!-- Scan message rendered here -->
+              </div>
+            </div>
+
+            <!-- Right: Attendance Analytics -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">📊</span>
+                  <h3>Real-Time Gate Attendance Analytics</h3>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="refreshCheckinStats()">🔄 Refresh</button>
+              </div>
+
+              <div class="checkin-metrics-grid">
+                <div class="cm-stat-box">
+                  <div class="cm-label">TOTAL REGISTERED</div>
+                  <div class="cm-value text-primary" id="cmTotalRegistered">10</div>
+                </div>
+                <div class="cm-stat-box">
+                  <div class="cm-label">CHECKED IN (ATTENDANCE)</div>
+                  <div class="cm-value text-success" id="cmTotalCheckedIn">6</div>
+                </div>
+                <div class="cm-stat-box">
+                  <div class="cm-label">ATTENDANCE RATE</div>
+                  <div class="cm-value text-warning" id="cmAttendanceRate">60%</div>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <div class="rc-bar-label">
+                  <span>Overall Event Footfall Rate</span>
+                  <strong id="cmProgressPct">60%</strong>
+                </div>
+                <div class="rc-track mt-1">
+                  <div class="rc-fill" id="cmProgressBar" style="width: 60%; background: var(--success);"></div>
+                </div>
+              </div>
+
+              <div class="divider-line"></div>
+
+              <h4 class="sub-section-title">Live Gate Check-in Stream</h4>
+              <div class="live-checkin-feed" id="liveCheckinFeed">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Registered Attendees Directory Table -->
+          <div class="dash-card mt-4">
+            <div class="card-header-bar">
+              <div class="card-header-title">
+                <span class="header-icon">👥</span>
+                <h3>Registered Participants & Attendance Roster</h3>
+              </div>
+              <div class="table-search-box">
+                <input type="text" id="participantSearchInput" class="entity-input" placeholder="Search by name, email, or ID..." oninput="filterParticipantsTable()" />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Participant ID</th>
+                    <th>Name</th>
+                    <th>Email & Phone</th>
+                    <th>College / Department</th>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Gate / Time</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="participantsTableBody">
+                  <!-- Dynamically rendered -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 2D: ORBIT AI CHATBOT ==================== -->
+        <section class="view-panel" id="view-chatbot" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>💬 Orbit AI Operations Assistant & Chatbot</h2>
+              <p class="view-subtitle">Conversational intelligence for campus event planners. Ask for venue suggestions, volunteer calculations, prize details, attendance metrics, and conflict resolutions.</p>
+            </div>
+            <button class="btn btn-outline" onclick="clearChatHistory()">🗑️ Clear Chat</button>
+          </div>
+
+          <div class="dash-card chat-workspace-card">
+            <!-- Quick Suggestion Chips -->
+            <div class="chat-prompt-chips">
+              <span class="chips-label">💡 Suggested Questions:</span>
+              <button class="chip-btn" onclick="sendQuickPrompt('Suggest venue for 350 students with projector')">🏛️ Suggest venue for 350 pax</button>
+              <button class="chip-btn" onclick="sendQuickPrompt('How many volunteers do I need for 400 attendees?')">👥 Calculate volunteer ratios</button>
+              <button class="chip-btn" onclick="sendQuickPrompt('What is the prize money for AI Prompt Combat and Hackathon?')">🏆 Check prize pools</button>
+              <button class="chip-btn" onclick="sendQuickPrompt('What is the live check-in and attendance percentage?')">📊 Live attendance status</button>
+              <button class="chip-btn" onclick="sendQuickPrompt('Explain pending conflicts and approvals')">⚠️ Pending conflicts & tasks</button>
+              <button class="chip-btn" onclick="sendQuickPrompt('Are participation certificates given for all events?')">📜 Certificate policy</button>
+            </div>
+
+            <!-- Chat Message Feed -->
+            <div class="chat-message-feed" id="chatMessageFeed">
+              <!-- Chat history rendered dynamically -->
+            </div>
+
+            <!-- Chat Input Box -->
+            <form class="chat-input-row" onsubmit="handleChatSubmit(event)">
+              <input type="text" id="chatInput" class="entity-input chat-input-field" placeholder="Ask Orbit AI anything (e.g. 'Suggest a venue for 250 students' or 'What are the rules for AI QuestX?')..." required />
+              <button type="submit" class="btn btn-primary" id="btnSendChat">
+                <span>Send ➔</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 3: AI PLANNER (INTAKE) ==================== -->
+        <section class="view-panel" id="view-planner" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>✨ AI Event Requirement Intake & Planner</h2>
+              <p class="view-subtitle">Describe your event in plain English. The AI agent extracts structured requirements and synthesizes an operational plan.</p>
+            </div>
+          </div>
+
+          <div class="grid-layout-2col">
+            <!-- Left: Natural Language Input & Scenarios -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">📝</span>
+                  <h3>Natural-Language Event Brief</h3>
+                </div>
+                <span class="badge badge-info">Agentic Parser</span>
+              </div>
+
+              <div class="preset-scenario-box">
+                <label class="input-label">Quick Scenario Presets:</label>
+                <div class="preset-button-grid">
+                  <button class="preset-btn" onclick="loadPromptScenario('hackathon')">
+                    🚀 <strong>2-Day AI Hackathon</strong> (300 Pax, Overnight, Labs)
+                  </button>
+                  <button class="preset-btn" onclick="loadPromptScenario('conference')">
+                    🎓 <strong>Autonomous Systems Summit</strong> (250 Pax, VIP Speakers)
+                  </button>
+                  <button class="preset-btn" onclick="loadPromptScenario('placement')">
+                    💼 <strong>Campus Recruitment Drive</strong> (200 Pax, Interviews)
+                  </button>
+                  <button class="preset-btn" onclick="loadPromptScenario('cultural')">
+                    🎭 <strong>Techno-Cultural Night</strong> (800 Pax, Amphitheatre)
+                  </button>
+                </div>
+              </div>
+
+              <div class="input-group mt-3">
+                <label class="input-label" for="plannerInput">Event Requirements Prompt:</label>
+                <textarea id="plannerInput" rows="6" placeholder="Describe your event requirements naturally..."></textarea>
+              </div>
+
+              <div class="action-btn-row mt-3">
+                <button class="btn btn-outline" id="btnParseOnly" onclick="handleParseRequirements()">
+                  🔍 Extract Requirements
+                </button>
+                <button class="btn btn-primary flex-1" id="btnSynthesizePlan" onclick="handleSynthesizeFullPlan()">
+                  ✨ Generate Complete Operational Plan
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Editable Structured Extracted Requirements -->
+            <div class="dash-card">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">📋</span>
+                  <h3>Structured Event Entities (Editable)</h3>
+                </div>
+                <span class="badge badge-success">AI Extracted</span>
+              </div>
+
+              <div class="extracted-entities-grid" id="extractedEntitiesContainer">
+                <div class="entity-card">
+                  <div class="entity-label">EVENT NAME</div>
+                  <input type="text" id="entName" value="AI Innovation Hackathon" class="entity-input" />
+                </div>
+                <div class="entity-card">
+                  <div class="entity-label">EVENT TYPE</div>
+                  <input type="text" id="entType" value="AI Hackathon" class="entity-input" />
+                </div>
+                <div class="entity-card">
+                  <div class="entity-label">PARTICIPANTS</div>
+                  <input type="number" id="entPax" value="300" class="entity-input" />
+                </div>
+                <div class="entity-card">
+                  <div class="entity-label">DURATION</div>
+                  <input type="text" id="entDuration" value="2 Days (Aug 28 - Aug 29)" class="entity-input" />
+                </div>
+                <div class="entity-card entity-card-span">
+                  <div class="entity-label">VENUES REQUESTED</div>
+                  <input type="text" id="entVenues" value="Main Auditorium + 3 CSE Labs" class="entity-input" />
+                </div>
+                <div class="entity-card">
+                  <div class="entity-label">VOLUNTEERS</div>
+                  <input type="number" id="entVolunteers" value="20" class="entity-input" />
+                </div>
+                <div class="entity-card">
+                  <div class="entity-label">BUDGET ESTIMATE</div>
+                  <input type="text" id="entBudget" value="$4,500.00" class="entity-input" />
+                </div>
+                <div class="entity-card entity-card-span">
+                  <div class="entity-label">EQUIPMENT & HARDWARE</div>
+                  <input type="text" id="entEquipment" value="Projectors, Microphones, Wi-Fi Routers, Extension Boards" class="entity-input" />
+                </div>
+                <div class="entity-card entity-card-span">
+                  <div class="entity-label">SPECIAL PERMISSIONS & FLAGS</div>
+                  <div class="flags-pill-row">
+                    <span class="pill-tag active">✓ Overnight 24h Access</span>
+                    <span class="pill-tag active">✓ External VIP Speaker</span>
+                    <span class="pill-tag active">✓ Food Catering</span>
+                    <span class="pill-tag active">✓ Dedicated Wi-Fi QoS</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="action-btn-row mt-3">
+                <button class="btn btn-success btn-block" onclick="handleSynthesizeFullPlan()">
+                  🚀 Confirm Entities & Build Master Plan
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 4: VENUES DATABASE & AVAILABILITY ==================== -->
+        <section class="view-panel" id="view-venues" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>🏛️ Campus Venues & Facility Management</h2>
+              <p class="view-subtitle">View capacities, amenities, and toggle live availability to simulate real-world facility clashes.</p>
+            </div>
+            <div class="filter-pills">
+              <button class="pill-btn active" onclick="filterVenues('all')">All Venues (8)</button>
+              <button class="pill-btn" onclick="filterVenues('auditorium')">Auditoriums</button>
+              <button class="pill-btn" onclick="filterVenues('labs')">CSE Labs</button>
+              <button class="pill-btn" onclick="filterVenues('halls')">Halls</button>
+            </div>
+          </div>
+
+          <div class="venues-catalog-grid" id="venuesCatalogGrid">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 5: RESOURCE INVENTORY & SHORTAGES ==================== -->
+        <section class="view-panel" id="view-resources" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>📦 Resource & Equipment Inventory</h2>
+              <p class="view-subtitle">Live tracking of AV, computing, networking, and furniture inventory with shortage recommendations.</p>
+            </div>
+          </div>
+
+          <div class="resources-table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Resource Item</th>
+                  <th>Category</th>
+                  <th>Total</th>
+                  <th>Allocated</th>
+                  <th>Available</th>
+                  <th>Shortage</th>
+                  <th>Allocation Meter</th>
+                  <th>AI Recommendation</th>
+                </tr>
+              </thead>
+              <tbody id="resourceTableBody">
+                <!-- Dynamically Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 6: VOLUNTEERS MANAGEMENT ==================== -->
+        <section class="view-panel" id="view-volunteers" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>👥 Volunteer Teams & Roster Allocation</h2>
+              <p class="view-subtitle">20 student volunteers organized into 5 specialized teams with shift schedules.</p>
+            </div>
+          </div>
+
+          <div class="volunteer-teams-summary-row" id="volunteerTeamsSummary">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="volunteers-grid mt-4" id="volunteersRosterGrid">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 7: SCHEDULE TIMELINE ==================== -->
+        <section class="view-panel" id="view-schedule" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>📅 Visual Schedule & Activity Itinerary</h2>
+              <p class="view-subtitle">Conflict-free chronological timeline with assigned venues, responsible teams, and hardware.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="exportOperationalPlanModal()">🖨️ Export Timetable</button>
+          </div>
+
+          <div class="schedule-timeline-container" id="scheduleTimelineContainer">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 8: TASKS & CHECKLISTS ==================== -->
+        <section class="view-panel" id="view-tasks" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>📋 Milestone Tasks & Operational Checklists (WBS)</h2>
+              <p class="view-subtitle">Milestone phases from T-14 to Post-Event. Interactive checks dynamically update readiness scores.</p>
+            </div>
+          </div>
+
+          <div class="tasks-phases-container" id="tasksPhasesContainer">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 9: CONFLICT DETECTION & RESOLUTION ==================== -->
+        <section class="view-panel" id="view-conflicts" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>⚠️ Conflict & Constraint Collision Engine</h2>
+              <p class="view-subtitle">Deterministic conflict detector evaluates timetable collisions, capacity bottlenecks, and inventory limits.</p>
+            </div>
+          </div>
+
+          <div class="conflicts-list-container" id="conflictsListContainer">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 10: HUMAN APPROVALS (HITL) ==================== -->
+        <section class="view-panel" id="view-approvals" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>🛡️ Human-in-the-Loop (HITL) Governance & Sanction Gates</h2>
+              <p class="view-subtitle">High-stakes financial disbursements, overnight security waivers, and VIP clearances require human authorization.</p>
+            </div>
+          </div>
+
+          <div class="approvals-list-container" id="approvalsListContainer">
+            <!-- Dynamically Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 11: NOTIFICATIONS CENTER ==================== -->
+        <section class="view-panel" id="view-notifications" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>🔔 Notifications & Event Operations Center</h2>
+              <p class="view-subtitle">Categorized real-time alerts with priority status.</p>
+            </div>
+            <div class="filter-pills">
+              <button class="pill-btn active" onclick="filterNotifs('ALL')">All</button>
+              <button class="pill-btn" onclick="filterNotifs('Critical')">Critical</button>
+              <button class="pill-btn" onclick="filterNotifs('Warning')">Warnings</button>
+              <button class="pill-btn" onclick="filterNotifs('Success')">Success</button>
+            </div>
+          </div>
+
+          <div class="notif-center-list" id="notifCenterList">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 12: WHAT IF? SIMULATION CENTER ==================== -->
+        <section class="view-panel" id="view-simulation" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <div class="badge badge-warning mb-1">MAIN DIFFERENTIATOR</div>
+              <h2>⚡ "WHAT IF?" Dynamic Replanning Simulation Center</h2>
+              <p class="view-subtitle">Simulate real-time campus disruptions and observe how Campus Orbit detects impact, evaluates alternatives, and dynamically adapts the operational plan.</p>
+            </div>
+          </div>
+
+          <!-- Disruption Selector Card -->
+          <div class="dash-card simulation-picker-card">
+            <h3 class="picker-title">Select a Real-World Campus Disruption to Simulate:</h3>
+            <div class="disruption-buttons-grid">
+              <button class="disruption-btn primary-disruption" onclick="triggerSimulation('AUDITORIUM_UNAVAILABLE', 'Main Auditorium HVAC failure & emergency maintenance.', 0, 'VEN-AUD-01')">
+                <span class="d-icon">🏛️</span>
+                <div>
+                  <strong>Main Auditorium Unavailable</strong>
+                  <span>Opening Ceremony & Keynote relocation (Capacity 500 $\rightarrow$ 250)</span>
+                </div>
+              </button>
+              <button class="disruption-btn" onclick="triggerSimulation('PROJECTOR_SHORTAGE', 'Central Media Store projector bulb failure (1 unit deficit).', 0, '')">
+                <span class="d-icon">📽️</span>
+                <div>
+                  <strong>Projector Shortage Deficit</strong>
+                  <span>Inter-department borrowing from ECE Department</span>
+                </div>
+              </button>
+              <button class="disruption-btn" onclick="triggerSimulation('VOLUNTEER_SHORTAGE', '5 volunteers unavailable due to mid-term submissions.', 0, '')">
+                <span class="d-icon">👥</span>
+                <div>
+                  <strong>5 Volunteers Unavailable</strong>
+                  <span>Auto re-roster backup pool into registration desks</span>
+                </div>
+              </button>
+              <button class="disruption-btn" onclick="triggerSimulation('WORKSHOP_DELAY', 'Keynote speaker flight delayed in transit (+90 mins).', 90, '')">
+                <span class="d-icon">⏱️</span>
+                <div>
+                  <strong>Keynote Speaker Delayed (+90m)</strong>
+                  <span>Advance lightning demos forward, adjust lunch timeline</span>
+                </div>
+              </button>
+              <button class="disruption-btn" onclick="triggerSimulation('LAB_POWER_OUTAGE', 'CSE Lab 2 circuit breaker tripped & server offline.', 0, 'CSE Lab 2')">
+                <span class="d-icon">⚡</span>
+                <div>
+                  <strong>CSE Lab 2 Power Fault</strong>
+                  <span>Migrate teams to Innovation Hub & engage generator</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Simulation Loading Spinner State -->
+          <div class="simulation-loading-box" id="simLoadingBox" style="display: none;">
+            <div class="spinner"></div>
+            <h3 id="simLoadingTitle">SIMULATING DISRUPTION & EVALUATING ALTERNATIVES...</h3>
+            <p id="simLoadingText">Checking capacity constraints, equipment availability, and timetable clashes across campus...</p>
+          </div>
+
+          <!-- Simulation Output Results Container -->
+          <div class="simulation-results-container" id="simResultsContainer" style="display: none;">
+            
+            <!-- Impact Analysis Alert -->
+            <div class="impact-alert-banner">
+              <div class="impact-icon">🚨</div>
+              <div class="impact-text">
+                <h4 id="simImpactTitle">Impact Analysis: Disruption Detected</h4>
+                <p id="simImpactDesc">Main Auditorium is offline. 3 sessions require immediate venue reallocation.</p>
+              </div>
+            </div>
+
+            <!-- BEFORE / AFTER COMPARISON CARD -->
+            <div class="before-after-card mt-4">
+              <div class="ba-header">
+                <h3>🔄 Before / After Operational Plan Comparison</h3>
+                <span class="badge badge-accent">Dynamic Diff</span>
+              </div>
+              <div class="ba-grid">
+                <div class="ba-column ba-before">
+                  <div class="ba-col-header">BEFORE DISRUPTION</div>
+                  <div class="ba-content-box" id="baBeforeBox">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+                <div class="ba-arrow">➔</div>
+                <div class="ba-column ba-after">
+                  <div class="ba-col-header">AFTER AI REPLANNING</div>
+                  <div class="ba-content-box" id="baAfterBox">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+              </div>
+              <div class="ba-rationale-box">
+                <strong>🤖 AI Selection Rationale:</strong>
+                <p id="baRationaleText">Innovation Hall satisfies all hard constraints: capacity for 250 pax, presentation projectors, high-density Wi-Fi 6, and zero schedule conflicts.</p>
+              </div>
+            </div>
+
+            <!-- 2-3 Ranked Candidate Alternatives -->
+            <div class="dash-card mt-4">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="header-icon">🏆</span>
+                  <h3>AI Replanned Alternative Venues (Ranked by Suitability)</h3>
+                </div>
+              </div>
+              <div class="candidates-ranking-grid" id="simCandidatesGrid">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Urgent Injected Tasks & Broadcast Alerts -->
+            <div class="grid-layout-2col mt-4">
+              <div class="dash-card">
+                <div class="card-header-bar">
+                  <div class="card-header-title">
+                    <span class="header-icon">🚨</span>
+                    <h3>Injected Urgent Mitigation Tasks</h3>
+                  </div>
+                </div>
+                <div id="simUrgentTasksList">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+
+              <div class="dash-card">
+                <div class="card-header-bar">
+                  <div class="card-header-title">
+                    <span class="header-icon">📢</span>
+                    <h3>Automated Stakeholder Broadcast Alerts</h3>
+                  </div>
+                </div>
+                <div id="simAlertsList">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Human Approval & Apply Action Bar -->
+            <div class="replan-approval-action-bar mt-4">
+              <div>
+                <h4>Human Authorization Required</h4>
+                <p>Review the AI-replanned operational changes above before applying to the active event plan.</p>
+              </div>
+              <div class="action-btn-row">
+                <button class="btn btn-outline" onclick="cancelSimulation()">Discard</button>
+                <button class="btn btn-success btn-lg" onclick="applyReplannedPlan()">
+                  ✓ Approve & Apply Replanned Changes
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 13: SETTINGS ==================== -->
+        <section class="view-panel" id="view-settings" style="display: none;">
+          <div class="view-header-row">
+            <div>
+              <h2>⚙️ Platform Settings & Environment Status</h2>
+              <p class="view-subtitle">System configuration, AI engine settings, and responsible AI governance.</p>
+            </div>
+          </div>
+
+          <div class="grid-layout-2col">
+            <div class="dash-card">
+              <h3 class="sub-section-title">Autonomous Agent Engine</h3>
+              <div class="setting-item">
+                <div>
+                  <strong>Built-in Demo Mode</strong>
+                  <p class="text-muted text-sm">Operates with full deterministic campus data (zero external API keys required).</p>
+                </div>
+                <span class="badge badge-success">ACTIVE</span>
+              </div>
+              <div class="setting-item">
+                <div>
+                  <strong>LLM Reasoning Mode</strong>
+                  <p class="text-muted text-sm">Hybrid Deterministic Constraint Checking + Semantic Extraction.</p>
+                </div>
+                <span class="badge badge-primary">ENABLED</span>
+              </div>
+              <div class="setting-item">
+                <div>
+                  <strong>Human-in-the-Loop Safeguards</strong>
+                  <p class="text-muted text-sm">Mandates manual sign-offs for high budgets and security curfews.</p>
+                </div>
+                <span class="badge badge-accent">ENFORCED</span>
+              </div>
+            </div>
+
+            <div class="dash-card">
+              <h3 class="sub-section-title">System Information</h3>
+              <div class="system-info-box">
+                <div><span>Application:</span> <strong>CAMPUS ORBIT</strong></div>
+                <div><span>Version:</span> <strong>v1.0.0-hackathon</strong></div>
+                <div><span>Multi-Agent Swarm:</span> <strong>7 Conceptual Sub-Agents</strong></div>
+                <div><span>Knowledge Base:</span> <strong>8 Venues, 8 Resource Categories, 20 Volunteers</strong></div>
+                <div><span>Constraint Engine:</span> <strong>Deterministic Graph & Timetable Validator</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 13: AUTHENTICATION & ACCESS ==================== -->
+        <section class="view-panel" id="view-auth" style="display: none;">
+          <div class="auth-page-container">
+            
+            <div class="auth-card">
+              <!-- Header -->
+              <div class="auth-card-header">
+                <div class="auth-brand-badge">
+                  <div class="brand-logo-icon">🪐</div>
+                  <div>
+                    <h2 class="auth-title">CAMPUS ORBIT</h2>
+                    <p class="auth-subtitle">Operational Access & Governance Portal</p>
+                  </div>
+                </div>
+                <div id="authSessionStatusBanner" class="auth-session-pill">
+                  <span class="status-dot"></span>
+                  <span id="authStatusText">Signed In: Priya Nair (Event Manager)</span>
+                </div>
+              </div>
+
+              <!-- Fast Demo 1-Click Account Switcher -->
+              <div class="auth-demo-box">
+                <div class="demo-box-label">⚡ FAST 1-CLICK DEMO ACCOUNTS:</div>
+                <div class="demo-chips-grid">
+                  <button type="button" class="demo-chip-btn" onclick="quickFillLogin('admin@campusorbit.edu', 'admin123', 'Dean / Admin')">
+                    👑 <strong>Dean / Admin</strong>
+                    <span>admin@campusorbit.edu</span>
+                  </button>
+                  <button type="button" class="demo-chip-btn active" onclick="quickFillLogin('manager@campusorbit.edu', 'manager123', 'Event Manager')">
+                    🎯 <strong>Event Manager</strong>
+                    <span>manager@campusorbit.edu</span>
+                  </button>
+                  <button type="button" class="demo-chip-btn" onclick="quickFillLogin('volunteer@campusorbit.edu', 'volunteer123', 'Student Volunteer Lead')">
+                    🎓 <strong>Volunteer Lead</strong>
+                    <span>volunteer@campusorbit.edu</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Auth Tabs -->
+              <div class="auth-tabs-row">
+                <button type="button" class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">
+                  🔑 Sign In to Console
+                </button>
+                <button type="button" class="auth-tab-btn" id="tabBtnSignup" onclick="switchAuthTab('signup')">
+                  📝 Create Account (Sign Up)
+                </button>
+              </div>
+
+              <!-- Alert Feedback Message -->
+              <div id="authAlertBox" class="auth-alert" style="display: none;"></div>
+
+              <!-- Form 1: Sign In -->
+              <form id="formLogin" class="auth-form" onsubmit="handleLoginSubmit(event)">
+                <div class="input-group">
+                  <label class="input-label" for="loginEmail">Campus Email Address:</label>
+                  <input type="text" id="loginEmail" class="entity-input" required placeholder="manager@campusorbit.edu" value="manager@campusorbit.edu" />
+                </div>
+
+                <div class="input-group mt-2">
+                  <label class="input-label" for="loginPassword">Access Password:</label>
+                  <input type="password" id="loginPassword" class="entity-input" required placeholder="••••••••" value="manager123" />
+                </div>
+
+                <div class="input-group mt-2">
+                  <label class="input-label" for="loginRole">Operational Role:</label>
+                  <select id="loginRole" class="entity-input select-input">
+                    <option value="Event Manager">Event Manager (Operations Lead)</option>
+                    <option value="Faculty Coordinator">Faculty Coordinator</option>
+                    <option value="Dean / Admin">Dean / Institutional Admin</option>
+                    <option value="Student Volunteer Lead">Student Volunteer Lead</option>
+                  </select>
+                </div>
+
+                <div class="auth-meta-row mt-2">
+                  <label class="check-row">
+                    <input type="checkbox" id="loginRemember" checked />
+                    <span>Keep me signed in on this campus device</span>
+                  </label>
+                  <a href="javascript:void(0)" onclick="quickFillLogin('admin@campusorbit.edu', 'admin123', 'Dean / Admin')" class="auth-link">Switch to Admin</a>
+                </div>
+
+                <div class="mt-3">
+                  <button type="submit" class="btn btn-primary btn-block btn-lg" id="btnLoginSubmit">
+                    🚀 Sign In to Operations Console
+                  </button>
+                </div>
+
+                <div class="auth-switch-prompt mt-3">
+                  New campus coordinator or student lead? 
+                  <a href="javascript:void(0)" onclick="switchAuthTab('signup')" class="auth-link-bold">Create an account</a>
+                </div>
+              </form>
+
+              <!-- Form 2: Sign Up -->
+              <form id="formSignup" class="auth-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
+                <div class="grid-layout-2col">
+                  <div class="input-group">
+                    <label class="input-label" for="signupName">Full Legal Name:</label>
+                    <input type="text" id="signupName" class="entity-input" required placeholder="e.g. Dr. Vikram Sen" />
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label" for="signupEmail">Official Campus Email:</label>
+                    <input type="email" id="signupEmail" class="entity-input" required placeholder="vikram.sen@campus.edu" />
+                  </div>
+                </div>
+
+                <div class="grid-layout-2col mt-2">
+                  <div class="input-group">
+                    <label class="input-label" for="signupDept">Academic / Admin Department:</label>
+                    <input type="text" id="signupDept" class="entity-input" required placeholder="e.g. Computer Science & Engg." />
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label" for="signupRole">Institutional Role:</label>
+                    <select id="signupRole" class="entity-input select-input">
+                      <option value="Event Manager">Event Manager (Operations Lead)</option>
+                      <option value="Faculty Coordinator">Faculty Coordinator</option>
+                      <option value="Dean / Admin">Dean / Institutional Admin</option>
+                      <option value="Student Volunteer Lead">Student Volunteer Lead</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group mt-2">
+                  <label class="input-label" for="signupPhone">Contact Number / Intercom Ext:</label>
+                  <input type="text" id="signupPhone" class="entity-input" placeholder="+91-98765-01099" />
+                </div>
+
+                <div class="grid-layout-2col mt-2">
+                  <div class="input-group">
+                    <label class="input-label" for="signupPassword">Create Password:</label>
+                    <input type="password" id="signupPassword" class="entity-input" required placeholder="Minimum 6 characters" />
+                  </div>
+                  <div class="input-group">
+                    <label class="input-label" for="signupConfirmPassword">Confirm Password:</label>
+                    <input type="password" id="signupConfirmPassword" class="entity-input" required placeholder="Re-enter password" />
+                  </div>
+                </div>
+
+                <div class="mt-2">
+                  <label class="check-row">
+                    <input type="checkbox" id="signupTerms" required checked />
+                    <span>I agree to institutional event compliance, safety protocols, and campus guidelines.</span>
+                  </label>
+                </div>
+
+                <div class="mt-3">
+                  <button type="submit" class="btn btn-success btn-block btn-lg" id="btnSignupSubmit">
+                    ✨ Create Account & Enter Operations Console
+                  </button>
+                </div>
+
+                <div class="auth-switch-prompt mt-3">
+                  Already registered on Campus Orbit? 
+                  <a href="javascript:void(0)" onclick="switchAuthTab('login')" class="auth-link-bold">Sign in here</a>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: "Why this venue?" Decision Explainer -->
+  <div class="modal-backdrop" id="whyVenueModal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-icon">🤖</span>
+          <h3 id="whyVenueTitle">Why was Innovation Hall selected?</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('whyVenueModal')">×</button>
+      </div>
+      <div class="modal-body" id="whyVenueBody">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('whyVenueModal')">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Human Approval Sign-off -->
+  <div class="modal-backdrop" id="approvalModal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-icon">✍️</span>
+          <h3 id="approvalModalTitle">Governance Authorization</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('approvalModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <p id="approvalModalDesc" class="text-muted mb-3">Formal institutional authorization required.</p>
+        <div class="input-group">
+          <label class="input-label">Approver Full Name & Title:</label>
+          <input type="text" id="modalApproverName" class="entity-input" placeholder="e.g. Prof. S. R. Ramanathan (Registrar)" />
+        </div>
+        <div class="input-group mt-2">
+          <label class="input-label">Official Endorsement Comments:</label>
+          <textarea id="modalComments" rows="3" class="entity-input" placeholder="e.g. Sanction approved under Student Activity Grant."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('approvalModal')">Cancel</button>
+        <button class="btn btn-danger" onclick="submitModalApproval('REJECTED')">Reject</button>
+        <button class="btn btn-primary" onclick="submitModalApproval('APPROVED')">Endorse & Authorize</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Export Operational Plan -->
+  <div class="modal-backdrop" id="exportModal" style="display: none;">
+    <div class="modal-box modal-box-lg">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-icon">📄</span>
+          <h3>CAMPUS ORBIT - Operational Event Master Brief</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('exportModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <pre class="export-pre-box" id="exportBriefBox">Loading Operational Plan...</pre>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('exportModal')">Close</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Logout Confirmation Dialog -->
+  <div class="modal-backdrop" id="logoutModal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-icon">🚪</span>
+          <h3>Confirm Session Sign Out</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('logoutModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 10px;">
+          Are you sure you want to log out of <strong>CAMPUS ORBIT</strong>?
+        </p>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Your active operational changes and background multi-agent simulations are safely persisted.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('logoutModal')">Stay Signed In</button>
+        <button class="btn btn-danger" onclick="executeLogout()">Yes, Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Orbit AI Quick Launcher -->
+  <div class="floating-chat-launcher" onclick="navigateTo('chatbot')" title="Ask Orbit AI Assistant">
+    <span class="floating-chat-icon">💬</span>
+    <span class="floating-chat-label">Orbit AI</span>
+    <span class="floating-chat-pulse"></span>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

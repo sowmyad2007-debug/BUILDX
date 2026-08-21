@@ -1,0 +1,13 @@
+﻿__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+node_modules/
+package-lock.json
+cloudflared.exe
+bore.exe
+bore.zip
+.vscode/
+.idea/
+*.log
