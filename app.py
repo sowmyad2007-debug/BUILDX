@@ -122,7 +122,11 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                     "GET /api/code": "Project architecture metadata and codebase details"
                 }
             })
-        elif path in ["/api/code", "/api/code/all", "/api/full-code", "/api/code/bundle", "/api/source"]:
+        elif path in [
+            "/api/code", "/api/code/all", "/api/full-code", "/api/code/bundle", 
+            "/api/source", "/api/project-code", "/api/total-code", "/api/all-in-one",
+            "/api/code/all-in-one"
+        ]:
             self._send_json(self._get_all_code_payload())
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
