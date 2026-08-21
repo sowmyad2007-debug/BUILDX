@@ -269,7 +269,7 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Endpoint not found"}, status=404)
 
     def _get_all_code_payload(self) -> Dict[str, Any]:
-        """Bundles the complete source code of all project files into one JSON response."""
+        """Bundles and properly organizes the complete source code of all project files and URLs into one JSON response."""
         base_dir = os.path.dirname(os.path.abspath(__file__))
 
         def read_file_safe(rel_path: str) -> Optional[Dict[str, Any]]:
@@ -280,59 +280,217 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                         content = f.read()
                     lines = content.splitlines()
                     return {
-                        "path": rel_path,
+                        "file_path": rel_path,
+                        "file_name": os.path.basename(rel_path),
                         "language": rel_path.split(".")[-1],
                         "lines_count": len(lines),
                         "size_bytes": len(content.encode("utf-8")),
                         "code": content
                     }
                 except Exception as err:
-                    return {"path": rel_path, "error": str(err)}
+                    return {"file_path": rel_path, "error": str(err)}
             return None
 
-        code_files = [
-            "app.py",
-            "core/models.py",
-            "core/database.py",
-            "core/orchestrator.py",
-            "core/agents/chatbot_agent.py",
-            "core/agents/conflict_agent.py",
-            "core/agents/approval_agent.py",
-            "core/agents/venue_agent.py",
-            "core/agents/volunteer_agent.py",
-            "core/agents/replanning_agent.py",
-            "static/index.html",
-            "static/styles.css",
-            "static/app.js",
-            "start_tunnel.js",
-            "package.json",
-            "tests/test_event_planner.py"
-        ]
+        # 1. Frontend Layer
+        frontend_files = {
+            "ui_markup_views": read_file_safe("static/index.html"),
+            "design_system_and_animations": read_file_safe("static/styles.css"),
+            "spa_controller_and_qr_engine": read_file_safe("static/app.js")
+        }
 
-        bundled_sources = {}
+        # 2. Backend Core Layer
+        backend_core_files = {
+            "http_server_and_rest_api": read_file_safe("app.py"),
+            "data_models_and_enums": read_file_safe("core/models.py"),
+            "database_and_event_catalog": read_file_safe("core/database.py"),
+            "multi_agent_orchestrator": read_file_safe("core/orchestrator.py"),
+            "campus_knowledge_base": read_file_safe("core/knowledge_base.py")
+        }
+
+        # 3. AI Agents Ecosystem
+        ai_agent_files = {
+            "orbit_chatbot_assistant": read_file_safe("core/agents/chatbot_agent.py"),
+            "intake_requirements_parser": read_file_safe("core/agents/intake_agent.py"),
+            "venue_allocation_matcher": read_file_safe("core/agents/venue_agent.py"),
+            "volunteer_squad_coordinator": read_file_safe("core/agents/volunteer_agent.py"),
+            "resource_equipment_manager": read_file_safe("core/agents/resource_agent.py"),
+            "schedule_timetable_sequencer": read_file_safe("core/agents/schedule_agent.py"),
+            "task_delegation_tracker": read_file_safe("core/agents/task_delegation_agent.py"),
+            "constraint_conflict_detector": read_file_safe("core/agents/conflict_agent.py"),
+            "governance_approval_router": read_file_safe("core/agents/approval_agent.py"),
+            "dynamic_replanning_engine": read_file_safe("core/agents/replanning_agent.py"),
+            "incident_briefing_generator": read_file_safe("core/agents/briefing_agent.py")
+        }
+
+        # 4. Testing & Infrastructure Layer
+        infra_files = {
+            "automated_test_suite": read_file_safe("tests/test_event_planner.py"),
+            "public_tunnel_launcher": read_file_safe("start_tunnel.js"),
+            "package_dependencies": read_file_safe("package.json")
+        }
+
+        # Combine all files
+        all_raw_files = {}
         total_lines = 0
         total_bytes = 0
 
-        for fpath in code_files:
-            info = read_file_safe(fpath)
-            if info and "code" in info:
-                bundled_sources[fpath] = info
-                total_lines += info["lines_count"]
-                total_bytes += info["size_bytes"]
+        for group in [frontend_files, backend_core_files, ai_agent_files, infra_files]:
+            for key, val in group.items():
+                if val and "code" in val:
+                    all_raw_files[val["file_path"]] = val
+                    total_lines += val["lines_count"]
+                    total_bytes += val["size_bytes"]
+
+        base_url = "https://campus-orbit-ai.loca.lt"
+
+        # 5. Proper URL-to-Code Architecture Mapping
+        url_to_code_mapping = [
+            {
+                "feature_name": "Executive Operations Dashboard",
+                "web_url": f"{base_url}/#dashboard",
+                "api_url": f"{base_url}/api/dashboard",
+                "ui_component": "static/index.html (section #view-dashboard)",
+                "backend_handler": "app.py (_get_dashboard_payload)",
+                "agents_used": ["IntakeAgent", "VenueAgent", "ConflictAgent", "ApprovalAgent"]
+            },
+            {
+                "feature_name": "Events Arena & Prizes (9 Events)",
+                "web_url": f"{base_url}/#events",
+                "api_url": f"{base_url}/api/events/catalog",
+                "ui_component": "static/index.html (section #view-events), static/app.js (renderEventsView)",
+                "backend_handler": "core/database.py (get_demo_events_catalog)",
+                "agents_used": ["ScheduleAgent", "VenueAgent"]
+            },
+            {
+                "feature_name": "Participant Registration & Instant QR Pass",
+                "web_url": f"{base_url}/#registration",
+                "api_url": f"{base_url}/api/participants/register",
+                "ui_component": "static/index.html (section #view-registration), static/app.js (generateQRCodeSVG)",
+                "backend_handler": "core/database.py (register_participant)",
+                "agents_used": ["VolunteerAgent", "NotificationDispatcher"]
+            },
+            {
+                "feature_name": "QR Entry Gate Attendance & Scanner",
+                "web_url": f"{base_url}/#checkin",
+                "api_url": f"{base_url}/api/checkin/scan",
+                "ui_component": "static/index.html (section #view-checkin), static/app.js (handleScanSubmit)",
+                "backend_handler": "core/database.py (checkin_participant, get_registration_stats)",
+                "agents_used": ["ReadinessEngine", "NotificationDispatcher"]
+            },
+            {
+                "feature_name": "Orbit AI Conversational Operations Assistant",
+                "web_url": f"{base_url}/#chatbot",
+                "api_url": f"{base_url}/api/chatbot/message",
+                "ui_component": "static/index.html (section #view-chatbot), static/app.js (handleChatSubmit)",
+                "backend_handler": "core/agents/chatbot_agent.py (OrbitChatbotAgent.handle_message)",
+                "agents_used": ["OrbitChatbotAgent", "CampusEventDirector"]
+            },
+            {
+                "feature_name": "Dynamic 'What-If' Disruption Replanning Simulator",
+                "web_url": f"{base_url}/#simulation",
+                "api_url": f"{base_url}/api/simulation/trigger",
+                "ui_component": "static/index.html (section #view-simulation), static/app.js (triggerSimulation)",
+                "backend_handler": "core/agents/replanning_agent.py (ReplanningAgent.replan_on_incident)",
+                "agents_used": ["ReplanningAgent", "ConflictAgent", "VenueAgent", "BriefingAgent"]
+            },
+            {
+                "feature_name": "Venues & Capacity Allocation",
+                "web_url": f"{base_url}/#venues",
+                "api_url": f"{base_url}/api/venues",
+                "ui_component": "static/index.html (section #view-venues), static/app.js (renderVenuesView)",
+                "backend_handler": "core/agents/venue_agent.py (VenueAgent)",
+                "agents_used": ["VenueAgent"]
+            },
+            {
+                "feature_name": "Resource & Equipment Inventory Shortages",
+                "web_url": f"{base_url}/#resources",
+                "api_url": f"{base_url}/api/resources",
+                "ui_component": "static/index.html (section #view-resources), static/app.js (renderResourcesView)",
+                "backend_handler": "core/agents/resource_agent.py (ResourceAgent)",
+                "agents_used": ["ResourceAgent"]
+            },
+            {
+                "feature_name": "Volunteer Squad & Roster Management",
+                "web_url": f"{base_url}/#volunteers",
+                "api_url": f"{base_url}/api/volunteers",
+                "ui_component": "static/index.html (section #view-volunteers), static/app.js (renderVolunteersView)",
+                "backend_handler": "core/agents/volunteer_agent.py (VolunteerAgent)",
+                "agents_used": ["VolunteerAgent"]
+            },
+            {
+                "feature_name": "Milestone Run-of-Show Timetable",
+                "web_url": f"{base_url}/#schedule",
+                "api_url": f"{base_url}/api/schedule",
+                "ui_component": "static/index.html (section #view-schedule), static/app.js (renderScheduleView)",
+                "backend_handler": "core/agents/schedule_agent.py (ScheduleAgent)",
+                "agents_used": ["ScheduleAgent"]
+            },
+            {
+                "feature_name": "Task Delegation & Kanban Workflows",
+                "web_url": f"{base_url}/#tasks",
+                "api_url": f"{base_url}/api/tasks",
+                "ui_component": "static/index.html (section #view-tasks), static/app.js (renderTasksView)",
+                "backend_handler": "core/agents/task_delegation_agent.py (TaskDelegationAgent)",
+                "agents_used": ["TaskDelegationAgent"]
+            },
+            {
+                "feature_name": "Operational Constraints & Clash Detection",
+                "web_url": f"{base_url}/#conflicts",
+                "api_url": f"{base_url}/api/conflicts",
+                "ui_component": "static/index.html (section #view-conflicts), static/app.js (renderConflictsView)",
+                "backend_handler": "core/agents/conflict_agent.py (ConflictAgent)",
+                "agents_used": ["ConflictAgent"]
+            },
+            {
+                "feature_name": "Institutional Governance & Approvals",
+                "web_url": f"{base_url}/#approvals",
+                "api_url": f"{base_url}/api/approvals",
+                "ui_component": "static/index.html (section #view-approvals), static/app.js (renderApprovalsView)",
+                "backend_handler": "core/agents/approval_agent.py (ApprovalAgent)",
+                "agents_used": ["ApprovalAgent"]
+            },
+            {
+                "feature_name": "Role-Based Authentication (Login / Signup)",
+                "web_url": f"{base_url}/#auth",
+                "api_url": f"{base_url}/api/auth/me",
+                "ui_component": "static/index.html (section #view-auth), static/app.js (handleLoginSubmit)",
+                "backend_handler": "core/database.py (authenticate_user, register_user)",
+                "agents_used": ["AuthEngine"]
+            }
+        ]
 
         return {
             "status": "success",
-            "project": "Campus Orbit AI",
+            "project_name": "CAMPUS ORBIT",
+            "tagline": "AI-Powered Campus Event Planning & Real-Time Dynamic Coordination Agent",
             "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
-            "public_app_url": "https://campus-orbit-ai.loca.lt",
-            "local_app_url": "http://127.0.0.1:8000",
-            "summary": {
-                "total_files": len(bundled_sources),
+            "public_website_url": base_url,
+            "local_website_url": "http://127.0.0.1:8000",
+            "master_code_api_url": f"{base_url}/api/code/all",
+            "architecture_overview": {
+                "total_source_files": len(all_raw_files),
                 "total_lines_of_code": total_lines,
-                "total_size_bytes": total_bytes,
-                "file_manifest": list(bundled_sources.keys())
+                "total_codebase_bytes": total_bytes,
+                "layers": {
+                    "frontend_layer": ["static/index.html", "static/styles.css", "static/app.js"],
+                    "backend_core_layer": ["app.py", "core/models.py", "core/database.py", "core/orchestrator.py", "core/knowledge_base.py"],
+                    "ai_agents_layer": [
+                        "core/agents/chatbot_agent.py", "core/agents/intake_agent.py", "core/agents/venue_agent.py",
+                        "core/agents/volunteer_agent.py", "core/agents/resource_agent.py", "core/agents/schedule_agent.py",
+                        "core/agents/task_delegation_agent.py", "core/agents/conflict_agent.py", "core/agents/approval_agent.py",
+                        "core/agents/replanning_agent.py", "core/agents/briefing_agent.py"
+                    ],
+                    "testing_and_devops_layer": ["tests/test_event_planner.py", "start_tunnel.js", "package.json"]
+                }
             },
-            "source_code": bundled_sources
+            "url_to_code_mapping": url_to_code_mapping,
+            "structured_code_bundles": {
+                "frontend": frontend_files,
+                "backend_core": backend_core_files,
+                "ai_agents": ai_agent_files,
+                "testing_and_infra": infra_files
+            },
+            "complete_raw_source_files": all_raw_files
         }
 
     def _get_master_all_payload(self) -> Dict[str, Any]:
