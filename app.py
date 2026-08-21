@@ -508,6 +508,8 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
             }
         ]
 
+        code_payload = self._get_all_code_payload()
+
         return {
             "status": "success",
             "project": {
@@ -516,8 +518,16 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                 "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
                 "public_app_url": base_url,
                 "local_app_url": local_url,
-                "master_api_url": f"{base_url}/api/all"
+                "master_api_url": f"{base_url}/api/all",
+                "master_code_api_url": f"{base_url}/api/code/all"
             },
+            "codebase_summary": {
+                "total_source_files": code_payload["ordered_pipeline_summary"]["total_ordered_files"],
+                "total_lines_of_code": code_payload["ordered_pipeline_summary"]["total_lines_of_code"],
+                "total_codebase_bytes": code_payload["ordered_pipeline_summary"]["total_codebase_bytes"],
+                "stages": code_payload["ordered_pipeline_summary"]["stages_sequence"]
+            },
+            "all_project_source_code": code_payload["sequential_code_files"],
             "step_wise_pipeline_summary": {
                 "total_steps": len(step_by_step_api_lifecycle),
                 "total_endpoints": sum(len(s["endpoints"]) for s in step_by_step_api_lifecycle),
