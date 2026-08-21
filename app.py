@@ -122,29 +122,8 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                     "GET /api/code": "Project architecture metadata and codebase details"
                 }
             })
-        elif path == "/api/code":
-            self._send_json({
-                "project": "Campus Orbit AI",
-                "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
-                "public_url": "https://campus-orbit-ai.loca.lt",
-                "local_url": "http://127.0.0.1:8000",
-                "architecture": {
-                    "backend": "Python 3.12 (HTTP Server, REST API, Rule Engine, Multi-Agent Orchestrator)",
-                    "frontend": "Modern Responsive SPA (HTML5, Vanilla CSS3 Glassmorphism, Pure SVG QR Generator)",
-                    "agents": [
-                        "Intake / Requirement Parser Agent",
-                        "Venue Allocation & Capacity Matcher Agent",
-                        "Resource & Equipment Optimization Agent",
-                        "Volunteer Allocation & Squad Coordinator Agent",
-                        "Schedule & Timetable Sequencer Agent",
-                        "Task Delegation & Dependency Tracker Agent",
-                        "Constraint & Clash Detection Agent",
-                        "Governance & Approval Routing Agent",
-                        "Dynamic Disruption Replanning Agent",
-                        "Orbit AI Conversational Operations Assistant"
-                    ]
-                }
-            })
+        elif path in ["/api/code", "/api/code/all", "/api/full-code", "/api/code/bundle", "/api/source"]:
+            self._send_json(self._get_all_code_payload())
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
 
@@ -289,6 +268,73 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
 
+    def _get_all_code_payload(self) -> Dict[str, Any]:
+        """Bundles the complete source code of all project files into one JSON response."""
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+
+        def read_file_safe(rel_path: str) -> Optional[Dict[str, Any]]:
+            full_path = os.path.join(base_dir, rel_path)
+            if os.path.exists(full_path) and os.path.isfile(full_path):
+                try:
+                    with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                    lines = content.splitlines()
+                    return {
+                        "path": rel_path,
+                        "language": rel_path.split(".")[-1],
+                        "lines_count": len(lines),
+                        "size_bytes": len(content.encode("utf-8")),
+                        "code": content
+                    }
+                except Exception as err:
+                    return {"path": rel_path, "error": str(err)}
+            return None
+
+        code_files = [
+            "app.py",
+            "core/models.py",
+            "core/database.py",
+            "core/orchestrator.py",
+            "core/agents/chatbot_agent.py",
+            "core/agents/conflict_agent.py",
+            "core/agents/approval_agent.py",
+            "core/agents/venue_agent.py",
+            "core/agents/volunteer_agent.py",
+            "core/agents/replanning_agent.py",
+            "static/index.html",
+            "static/styles.css",
+            "static/app.js",
+            "start_tunnel.js",
+            "package.json",
+            "tests/test_event_planner.py"
+        ]
+
+        bundled_sources = {}
+        total_lines = 0
+        total_bytes = 0
+
+        for fpath in code_files:
+            info = read_file_safe(fpath)
+            if info and "code" in info:
+                bundled_sources[fpath] = info
+                total_lines += info["lines_count"]
+                total_bytes += info["size_bytes"]
+
+        return {
+            "status": "success",
+            "project": "Campus Orbit AI",
+            "repository": "https://github.com/sowmyad2007-debug/campus-orbit-ai",
+            "public_app_url": "https://campus-orbit-ai.loca.lt",
+            "local_app_url": "http://127.0.0.1:8000",
+            "summary": {
+                "total_files": len(bundled_sources),
+                "total_lines_of_code": total_lines,
+                "total_size_bytes": total_bytes,
+                "file_manifest": list(bundled_sources.keys())
+            },
+            "source_code": bundled_sources
+        }
+
     def _get_master_all_payload(self) -> Dict[str, Any]:
         """Consolidates ALL public Web URLs, REST API endpoints, and live data snapshots into one response."""
         base_url = "https://campus-orbit-ai.loca.lt"
@@ -324,6 +370,7 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
             },
             "all_api_urls": {
                 "master_consolidated_api": f"{base_url}/api/all",
+                "all_source_code_api": f"{base_url}/api/code/all",
                 "api_docs": f"{base_url}/api/docs",
                 "code_architecture_api": f"{base_url}/api/code",
                 "dashboard_api": f"{base_url}/api/dashboard",
