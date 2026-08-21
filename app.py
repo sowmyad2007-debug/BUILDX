@@ -37,7 +37,7 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
             file_rel = path.lstrip("/")
             mime_type, _ = mimetypes.guess_type(file_rel)
             self._serve_static_file(file_rel, mime_type or "application/octet-stream")
-        elif path in ["/api/all", "/api/master", "/api/urls", "/api/everything"]:
+        elif path in ["/api/all", "/api/master", "/api/urls", "/api/everything", "/api/pipeline", "/api/steps"]:
             self._send_json(self._get_master_all_payload())
         elif path == "/api/dashboard":
             self._send_json(self._get_dashboard_payload())
@@ -422,11 +422,91 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
         }
 
     def _get_master_all_payload(self) -> Dict[str, Any]:
-        """Consolidates ALL public Web URLs, REST API endpoints, and live data snapshots into one response."""
+        """Consolidates ALL public Web URLs, REST API endpoints, and live data snapshots arranged step-by-step in order."""
         base_url = "https://campus-orbit-ai.loca.lt"
         local_url = "http://127.0.0.1:8000"
         stats = db.get_registration_stats()
         readiness = db.calculate_readiness()
+
+        step_by_step_api_lifecycle = [
+            {
+                "step_number": "01",
+                "step_name": "System Discovery & Code Architecture",
+                "purpose": "Inspect platform endpoints, retrieve ordered source code, and read API schemas.",
+                "endpoints": [
+                    {"method": "GET", "url": f"{base_url}/api/all", "description": "Master all-in-one API with step-by-step arranged URLs and live state"},
+                    {"method": "GET", "url": f"{base_url}/api/code/all", "description": "Sequential source code bundle arranged across all 6 architecture stages"},
+                    {"method": "GET", "url": f"{base_url}/api/docs", "description": "Interactive OpenAPI documentation directory"},
+                    {"method": "GET", "url": f"{base_url}/api/settings", "description": "System settings, version, and operational readiness"}
+                ]
+            },
+            {
+                "step_number": "02",
+                "step_name": "User Authentication & Role Management",
+                "purpose": "Register accounts, sign in, verify active session, and logout.",
+                "endpoints": [
+                    {"method": "POST", "url": f"{base_url}/api/auth/register", "description": "Register organizer/volunteer/staff account"},
+                    {"method": "POST", "url": f"{base_url}/api/auth/login", "description": "Authenticate user credentials and receive session"},
+                    {"method": "GET", "url": f"{base_url}/api/auth/me", "description": "Retrieve active authenticated user profile"},
+                    {"method": "POST", "url": f"{base_url}/api/auth/logout", "description": "Terminate active session"}
+                ]
+            },
+            {
+                "step_number": "03",
+                "step_name": "Event Discovery & AI Requirement Planning",
+                "purpose": "Browse 9 events with dates & prizes (₹3k–₹10k), fetch active event plans, or generate new plans via NLP.",
+                "endpoints": [
+                    {"method": "GET", "url": f"{base_url}/api/events/catalog", "description": "Fetch 9 events with calendar dates and prize money tiers (Max ₹10k, Min ₹3k)"},
+                    {"method": "GET", "url": f"{base_url}/api/events", "description": "Get current active event master plan"},
+                    {"method": "POST", "url": f"{base_url}/api/generate-plan", "description": "Parse natural language prompt and generate multi-agent event plan"}
+                ]
+            },
+            {
+                "step_number": "04",
+                "step_name": "Venue, Resource & Volunteer Allocation",
+                "purpose": "Assign venues, check equipment shortages, and allocate volunteer squads (1:15 ratio).",
+                "endpoints": [
+                    {"method": "GET", "url": f"{base_url}/api/venues", "description": "Retrieve all 8 campus venues with capacity and equipment"},
+                    {"method": "GET", "url": f"{base_url}/api/venues/explain/VEN-AUD-01", "description": "AI explainability rationale for venue suitability"},
+                    {"method": "GET", "url": f"{base_url}/api/resources", "description": "Equipment inventory, shortage tracking, and borrowing items"},
+                    {"method": "GET", "url": f"{base_url}/api/volunteers", "description": "Volunteer roster and 5-squad allocation summary"}
+                ]
+            },
+            {
+                "step_number": "05",
+                "step_name": "Timetable, Task Delegation & Governance Approvals",
+                "purpose": "Sequenced run of show, task Kanban status, conflict checks, and administrative sign-offs.",
+                "endpoints": [
+                    {"method": "GET", "url": f"{base_url}/api/schedule", "description": "Milestone timetable and master run of show"},
+                    {"method": "GET", "url": f"{base_url}/api/tasks", "description": "Task delegation with Kanban statuses and priorities"},
+                    {"method": "GET", "url": f"{base_url}/api/conflicts", "description": "Detected constraint clashes and AI resolution recommendations"},
+                    {"method": "GET", "url": f"{base_url}/api/approvals", "description": "Governance clearance workflow and institutional signatures"}
+                ]
+            },
+            {
+                "step_number": "06",
+                "step_name": "Participant Registration & QR Gate Attendance",
+                "purpose": "Public registration with digital SVG QR token generation and gate scanner attendance check-in.",
+                "endpoints": [
+                    {"method": "POST", "url": f"{base_url}/api/participants/register", "description": "Register participant and generate encrypted SVG QR digital pass"},
+                    {"method": "GET", "url": f"{base_url}/api/participants", "description": "Retrieve all registered participants and QR tokens"},
+                    {"method": "POST", "url": f"{base_url}/api/checkin/scan", "description": "Validate QR code and record entry check-in"},
+                    {"method": "GET", "url": f"{base_url}/api/checkin/stats", "description": "Live attendance percentage and check-in KPIs"}
+                ]
+            },
+            {
+                "step_number": "07",
+                "step_name": "Orbit AI Operations Assistant & Disruption Replanning",
+                "purpose": "Ask conversational queries to Orbit AI and simulate What-If emergency disruptions.",
+                "endpoints": [
+                    {"method": "POST", "url": f"{base_url}/api/chatbot/message", "description": "Natural language operations queries to Orbit AI"},
+                    {"method": "GET", "url": f"{base_url}/api/chatbot/history", "description": "Retrieve conversation message history"},
+                    {"method": "POST", "url": f"{base_url}/api/simulation/trigger", "description": "Trigger campus incident (e.g. blackout, speaker delay)"},
+                    {"method": "POST", "url": f"{base_url}/api/simulation/apply", "description": "Apply dynamic AI replanning resolutions"},
+                    {"method": "GET", "url": f"{base_url}/api/dashboard", "description": "Executive dashboard overview, readiness score, and live alert feed"}
+                ]
+            }
+        ]
 
         return {
             "status": "success",
@@ -438,46 +518,12 @@ class CampusOrbitHTTPHandler(BaseHTTPRequestHandler):
                 "local_app_url": local_url,
                 "master_api_url": f"{base_url}/api/all"
             },
-            "all_web_urls": {
-                "dashboard": f"{base_url}/#dashboard",
-                "events_arena_and_prizes": f"{base_url}/#events",
-                "participant_registration_and_qr": f"{base_url}/#registration",
-                "qr_live_attendance_checkin": f"{base_url}/#checkin",
-                "orbit_ai_chatbot": f"{base_url}/#chatbot",
-                "dynamic_what_if_simulator": f"{base_url}/#simulation",
-                "venues_and_capacity": f"{base_url}/#venues",
-                "resources_and_inventory": f"{base_url}/#resources",
-                "volunteers_and_squads": f"{base_url}/#volunteers",
-                "schedule_timetable": f"{base_url}/#schedule",
-                "tasks_and_kanban": f"{base_url}/#tasks",
-                "conflicts_and_constraints": f"{base_url}/#conflicts",
-                "governance_and_approvals": f"{base_url}/#approvals",
-                "auth_login_signup": f"{base_url}/#auth"
+            "step_wise_pipeline_summary": {
+                "total_steps": len(step_by_step_api_lifecycle),
+                "total_endpoints": sum(len(s["endpoints"]) for s in step_by_step_api_lifecycle),
+                "steps_sequence": [f"Step {s['step_number']}: {s['step_name']}" for s in step_by_step_api_lifecycle]
             },
-            "all_api_urls": {
-                "master_consolidated_api": f"{base_url}/api/all",
-                "all_source_code_api": f"{base_url}/api/code/all",
-                "api_docs": f"{base_url}/api/docs",
-                "code_architecture_api": f"{base_url}/api/code",
-                "dashboard_api": f"{base_url}/api/dashboard",
-                "events_catalog_api": f"{base_url}/api/events/catalog",
-                "participants_list_api": f"{base_url}/api/participants",
-                "register_participant_api": f"{base_url}/api/participants/register",
-                "checkin_scan_api": f"{base_url}/api/checkin/scan",
-                "checkin_stats_api": f"{base_url}/api/checkin/stats",
-                "chatbot_message_api": f"{base_url}/api/chatbot/message",
-                "chatbot_history_api": f"{base_url}/api/chatbot/history",
-                "venues_api": f"{base_url}/api/venues",
-                "resources_api": f"{base_url}/api/resources",
-                "volunteers_api": f"{base_url}/api/volunteers",
-                "schedule_api": f"{base_url}/api/schedule",
-                "tasks_api": f"{base_url}/api/tasks",
-                "conflicts_api": f"{base_url}/api/conflicts",
-                "approvals_api": f"{base_url}/api/approvals",
-                "generate_plan_api": f"{base_url}/api/generate-plan",
-                "simulation_trigger_api": f"{base_url}/api/simulation/trigger",
-                "simulation_apply_api": f"{base_url}/api/simulation/apply"
-            },
+            "step_by_step_api_pipeline": step_by_step_api_lifecycle,
             "live_summary": {
                 "total_events": len(db.events_catalog),
                 "total_registered": stats["total_registered"],
