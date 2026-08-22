@@ -43,3 +43,5 @@ dev.db-journal
 __pycache__/
 .pytest_cache/
 *.pyc
+
+.vercel
