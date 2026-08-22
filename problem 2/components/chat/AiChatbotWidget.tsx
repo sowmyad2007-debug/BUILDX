@@ -15,7 +15,14 @@ import {
   Calendar,
   AlertTriangle,
   RefreshCw,
-  ArrowUpRight
+  ArrowUpRight,
+  Copy,
+  Check,
+  HelpCircle,
+  QrCode,
+  Trophy,
+  KeyRound,
+  MessageSquare
 } from "lucide-react";
 
 interface Message {
@@ -30,31 +37,44 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: "msg-welcome",
     role: "assistant",
-    content: "👋 Hi! I'm **CampusFlow AI Assistant**.\n\nI can help you explore campus events, plan new symposia with AI intake, detect venue collisions, or simulate dynamic replanning.\n\nWhat would you like to do today?",
+    content: "👋 Hello! I'm your **CampusFlow AI Chatbot Helper**.\n\nI can instantly assist you with:\n• 🎪 **Event Info & Ticket Pricing** (Find free events or prize pools)\n• 📱 **Digital QR Passes & Verification** (How to download passes)\n• 🔑 **Forgot Password & Account Recovery** (Fast 2-step OTP reset)\n• 🧠 **Natural Language Event Planning** (Generate schedules from briefs)\n• ⚠️ **Conflict Detection & Dynamic Replanning** (Fix venue/hardware collisions)\n\nWhat can I help you with today?",
     suggestedActions: [
       { label: "🎟️ Show All 9 Events", href: "/events" },
+      { label: "🏆 Winner Prize Pools", href: "/events" },
+      { label: "📱 My Passes & QR", href: "/dashboard" },
       { label: "🧠 Plan an Event with AI", href: "/organizer/create-event" },
-      { label: "⚠️ Check Venue Conflicts", href: "/conflicts" },
     ],
     timestamp: "Just now",
   }
 ];
 
-const QUICK_PROMPTS = [
-  "🎟️ Which events are free?",
-  "💻 Tell me about Hackathon 2026",
-  "⚠️ Are there venue conflicts?",
-  "⚡ What if Seminar Hall A fails?",
+const STUDENT_HELPER_PROMPTS = [
+  "🎟️ Which events are free of cost?",
+  "🏆 What is the prize money for Hackathon 2026?",
+  "📱 How do I get my QR code pass?",
+  "🔑 How to reset my password if I forgot it?",
+  "💼 Tell me about Mega Placement Drive",
+  "🎪 When does TechFest 2026 start?",
+];
+
+const ORGANIZER_HELPER_PROMPTS = [
   "🧠 Plan a 2-day AI Workshop for 200 students",
-  "🎓 How do I register for an event?",
+  "⚠️ Check active venue conflicts & collisions",
+  "⚡ What if Seminar Hall A HVAC breaks down?",
+  "🏛️ Which venues have 400+ capacity and Wi-Fi 6?",
+  "👥 How are volunteer squads distributed?",
+  "🛡️ How do Human Approval Gates work?",
 ];
 
 export function AiChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showHelperBubble, setShowHelperBubble] = useState(true);
+  const [helperTab, setHelperTab] = useState<"all" | "student" | "organizer">("all");
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -64,6 +84,7 @@ export function AiChatbotWidget() {
   useEffect(() => {
     if (isOpen) {
       scrollToBottom();
+      setShowHelperBubble(false);
     }
   }, [messages, isOpen]);
 
@@ -127,17 +148,16 @@ export function AiChatbotWidget() {
     }
   };
 
-  const handleClearChat = () => {
-    setMessages(INITIAL_MESSAGES);
+  const handleCopy = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Helper to format basic markdown (bold, bullet points, linebreaks)
   const renderFormattedText = (content: string) => {
     const lines = content.split("\n");
     return lines.map((line, idx) => {
-      // Bold replacement
       let formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      // Code tags replacement
       formatted = formatted.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-slate-800 text-blue-400 font-mono text-[11px]">$1</code>');
 
       if (line.startsWith("• ") || line.startsWith("- ")) {
@@ -154,59 +174,92 @@ export function AiChatbotWidget() {
     });
   };
 
+  const activePrompts = helperTab === "student" 
+    ? STUDENT_HELPER_PROMPTS 
+    : helperTab === "organizer" 
+    ? ORGANIZER_HELPER_PROMPTS 
+    : [...STUDENT_HELPER_PROMPTS.slice(0, 3), ...ORGANIZER_HELPER_PROMPTS.slice(0, 3)];
+
   return (
     <div className="fixed bottom-5 right-5 z-50">
+      {/* Proactive Helper Speech Balloon Bubble */}
+      {!isOpen && showHelperBubble && (
+        <div className="relative mb-3 animate-bounce">
+          <div className="flex items-center gap-2 rounded-2xl bg-slate-900 px-3.5 py-2 text-xs font-semibold text-slate-200 border border-purple-500/40 shadow-2xl backdrop-blur-md">
+            <span className="text-sm">👋</span>
+            <span>Need help? Ask the <strong>AI Chatbot Helper</strong>!</span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowHelperBubble(false);
+              }}
+              className="rounded-full p-1 text-slate-400 hover:text-white"
+              aria-label="Dismiss helper tooltip"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+          <div className="absolute right-8 -bottom-1.5 h-3 w-3 rotate-45 bg-slate-900 border-r border-b border-purple-500/40" />
+        </div>
+      )}
+
       {/* Floating Trigger Button (when closed) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-2.5 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-3.5 sm:px-5 sm:py-3.5 text-white shadow-2xl hover:scale-105 hover:shadow-blue-500/25 transition duration-300 active:scale-95 border border-white/20"
-          aria-label="Open AI Assistant"
+          className="group flex items-center gap-2.5 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-3.5 sm:px-5 sm:py-3.5 text-white shadow-2xl hover:scale-105 hover:shadow-purple-500/30 transition duration-300 active:scale-95 border border-white/20"
+          aria-label="Open AI Chatbot Helper"
         >
           <div className="relative">
-            <Bot className="h-6 w-6 text-white animate-bounce" />
+            <Bot className="h-6 w-6 text-white group-hover:rotate-12 transition transform" />
             <span className="absolute -top-1 -right-1 flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
             </span>
           </div>
           <div className="hidden sm:flex flex-col text-left">
-            <span className="text-xs font-black tracking-tight leading-tight">AI Assistant</span>
-            <span className="text-[10px] text-blue-200 font-medium leading-tight">Campus Coordinator</span>
+            <span className="text-xs font-black tracking-tight leading-tight flex items-center gap-1">
+              <span>AI Chatbot Helper</span>
+              <Sparkles className="h-3 w-3 text-amber-300" />
+            </span>
+            <span className="text-[10px] text-blue-200 font-medium leading-tight">Instant Campus Assistant</span>
           </div>
         </button>
       )}
 
-      {/* Interactive Chat Window Modal */}
+      {/* Interactive Chat Helper Modal Window */}
       {isOpen && (
         <div
           className={`flex flex-col rounded-3xl bg-slate-900 border border-slate-700/80 shadow-2xl overflow-hidden transition-all duration-300 ${
             isExpanded
-              ? "w-[92vw] sm:w-[680px] h-[85vh] max-h-[750px]"
-              : "w-[92vw] sm:w-[420px] h-[540px]"
+              ? "w-[94vw] sm:w-[720px] h-[85vh] max-h-[800px]"
+              : "w-[94vw] sm:w-[440px] h-[580px]"
           }`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/80 px-4 py-3 backdrop-blur-md">
+          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/90 px-4 py-3 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 shadow-md">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-blue-600 shadow-md">
                 <Bot className="h-5 w-5 text-white" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-xs font-bold text-white">CampusFlow AI Assistant</h3>
-                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <h3 className="text-xs font-bold text-white">CampusFlow AI Helper</h3>
+                  <span className="flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded font-bold">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Online
+                  </span>
                 </div>
-                <p className="text-[10px] text-slate-400">Autonomous Event Planning & Queries</p>
+                <p className="text-[10px] text-slate-400">Events • Passes • Prizes • Planning Helper</p>
               </div>
             </div>
 
             <div className="flex items-center gap-1">
               <button
-                onClick={handleClearChat}
+                onClick={() => setMessages(INITIAL_MESSAGES)}
                 className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition"
-                title="Clear Chat History"
-                aria-label="Clear chat"
+                title="Reset Conversation"
+                aria-label="Reset chat"
               >
                 <RotateCcw className="h-4 w-4" />
               </button>
@@ -214,29 +267,63 @@ export function AiChatbotWidget() {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="hidden sm:flex rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition"
                 title={isExpanded ? "Collapse Window" : "Expand Window"}
-                aria-label="Toggle window size"
+                aria-label="Toggle size"
               >
                 {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </button>
               <button
                 onClick={() => setIsOpen(false)}
                 className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-rose-400 transition"
-                title="Close Assistant"
-                aria-label="Close assistant"
+                title="Close AI Helper"
+                aria-label="Close"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
+          {/* Quick Helper Category Filters */}
+          <div className="flex items-center justify-between px-3 py-2 bg-slate-950/60 border-b border-slate-800/80 text-[11px]">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              <HelpCircle className="h-3 w-3 text-purple-400" />
+              <span>Quick Assist:</span>
+            </span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setHelperTab("all")}
+                className={`rounded-md px-2 py-0.5 font-bold transition ${
+                  helperTab === "all" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setHelperTab("student")}
+                className={`rounded-md px-2 py-0.5 font-bold transition ${
+                  helperTab === "student" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🎓 Student
+              </button>
+              <button
+                onClick={() => setHelperTab("organizer")}
+                className={`rounded-md px-2 py-0.5 font-bold transition ${
+                  helperTab === "organizer" ? "bg-purple-600 text-white" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🧭 Organizer
+              </button>
+            </div>
+          </div>
+
           {/* Quick Prompts Carousel */}
-          <div className="flex items-center gap-1.5 overflow-x-auto px-3 py-2 bg-slate-950/40 border-b border-slate-800/60 no-scrollbar text-[11px]">
-            {QUICK_PROMPTS.map((prompt, i) => (
+          <div className="flex items-center gap-1.5 overflow-x-auto px-3 py-2 bg-slate-950/30 border-b border-slate-800/60 no-scrollbar text-[11px]">
+            {activePrompts.map((prompt, i) => (
               <button
                 key={i}
                 onClick={() => handleSendMessage(prompt)}
                 disabled={loading}
-                className="shrink-0 rounded-full bg-slate-800/80 hover:bg-blue-600/20 px-2.5 py-1 text-slate-300 hover:text-blue-300 border border-slate-700/60 transition whitespace-nowrap active:scale-95"
+                className="shrink-0 rounded-full bg-slate-800/90 hover:bg-purple-600/20 px-2.5 py-1 text-slate-300 hover:text-purple-300 border border-slate-700/60 transition whitespace-nowrap active:scale-95"
               >
                 {prompt}
               </button>
@@ -257,17 +344,17 @@ export function AiChatbotWidget() {
                 )}
 
                 <div
-                  className={`rounded-2xl px-3.5 py-2.5 max-w-[85%] space-y-2 shadow-sm ${
+                  className={`rounded-2xl px-3.5 py-2.5 max-w-[85%] space-y-2 shadow-md relative group ${
                     msg.role === "user"
                       ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-none"
-                      : "bg-slate-800/90 text-slate-200 border border-slate-700/60 rounded-bl-none"
+                      : "bg-slate-800/95 text-slate-200 border border-slate-700/70 rounded-bl-none"
                   }`}
                 >
                   <div className="text-xs leading-relaxed">
                     {msg.role === "assistant" ? renderFormattedText(msg.content) : msg.content}
                   </div>
 
-                  {/* Suggested Action Links */}
+                  {/* Action Shortcuts */}
                   {msg.suggestedActions && msg.suggestedActions.length > 0 && (
                     <div className="pt-2 flex flex-wrap gap-1.5 border-t border-slate-700/60">
                       {msg.suggestedActions.map((action, idx) => (
@@ -275,7 +362,7 @@ export function AiChatbotWidget() {
                           key={idx}
                           href={action.href}
                           onClick={() => setIsOpen(false)}
-                          className="inline-flex items-center gap-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 px-2 py-1 text-[11px] font-bold text-blue-400 border border-blue-500/20 transition active:scale-95"
+                          className="inline-flex items-center gap-1 rounded-lg bg-blue-500/15 hover:bg-blue-500/30 px-2.5 py-1 text-[11px] font-bold text-blue-400 border border-blue-500/30 transition active:scale-95"
                         >
                           <span>{action.label}</span>
                           <ArrowUpRight className="h-3 w-3" />
@@ -284,8 +371,18 @@ export function AiChatbotWidget() {
                     </div>
                   )}
 
-                  <div className="text-[9px] text-slate-400/80 text-right pt-0.5">
-                    {msg.timestamp}
+                  <div className="flex items-center justify-between text-[9px] text-slate-400/80 pt-0.5">
+                    {msg.role === "assistant" && (
+                      <button
+                        onClick={() => handleCopy(msg.id, msg.content)}
+                        className="opacity-0 group-hover:opacity-100 flex items-center gap-1 hover:text-white transition"
+                        title="Copy answer"
+                      >
+                        {copiedId === msg.id ? <Check className="h-2.5 w-2.5 text-emerald-400" /> : <Copy className="h-2.5 w-2.5" />}
+                        <span>{copiedId === msg.id ? "Copied" : "Copy"}</span>
+                      </button>
+                    )}
+                    <span className="ml-auto">{msg.timestamp}</span>
                   </div>
                 </div>
 
@@ -308,7 +405,7 @@ export function AiChatbotWidget() {
                     <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0ms" }} />
                     <div className="h-2 w-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "150ms" }} />
                     <div className="h-2 w-2 rounded-full bg-purple-400 animate-bounce" style={{ animationDelay: "300ms" }} />
-                    <span className="text-[11px] text-slate-400 ml-1.5">Analyzing constraints...</span>
+                    <span className="text-[11px] text-slate-400 ml-1.5">AI Helper analyzing query...</span>
                   </div>
                 </div>
               </div>
@@ -325,27 +422,29 @@ export function AiChatbotWidget() {
             }}
             className="border-t border-slate-800 bg-slate-950 p-3"
           >
-            <div className="flex items-center gap-2 rounded-2xl bg-slate-900 px-3 py-1.5 border border-slate-700 focus-within:border-blue-500 transition">
+            <div className="flex items-center gap-2 rounded-2xl bg-slate-900 px-3 py-1.5 border border-slate-700 focus-within:border-purple-500 transition">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about events, venues, conflicts, or type requirements..."
+                placeholder="Ask AI Helper anything (e.g. 'How do I get my QR pass?')..."
                 disabled={loading}
                 className="flex-1 bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none py-1"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-40 disabled:hover:bg-blue-600 transition shadow"
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-600 hover:bg-purple-500 text-white disabled:opacity-40 disabled:hover:bg-purple-600 transition shadow"
                 aria-label="Send message"
               >
                 <Send className="h-3.5 w-3.5" />
               </button>
             </div>
             <div className="flex items-center justify-between px-2 pt-1.5 text-[10px] text-slate-500">
-              <span>Press Enter to send</span>
-              <span>CampusFlow AI Core Engine</span>
+              <span>Press Enter to send • 24/7 AI Helper</span>
+              <Link href="/assistant" onClick={() => setIsOpen(false)} className="hover:text-purple-400 transition">
+                Open Full Studio ↗
+              </Link>
             </div>
           </form>
         </div>

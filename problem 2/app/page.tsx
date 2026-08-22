@@ -97,6 +97,53 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 1.5. Interactive AI Chatbot Helper Hub */}
+      <section className="rounded-3xl bg-gradient-to-r from-purple-950/60 via-slate-900 to-indigo-950/60 border border-purple-500/30 p-6 sm:p-8 shadow-2xl space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25">
+              <Bot className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-black text-white">AI Campus Event Chatbot Helper</h2>
+                <span className="rounded-full bg-purple-500/20 px-2.5 py-0.5 text-[10px] font-black text-purple-300 border border-purple-500/30">
+                  Live 24/7
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Instant assistance for event schedules, cash prize pools, digital QR passes, password recovery, and AI event planning.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href="/assistant"
+            className="shrink-0 flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 px-5 py-2.5 text-xs font-bold text-white transition shadow-lg shadow-purple-500/20 active:scale-95 text-center justify-center"
+          >
+            <Sparkles className="h-4 w-4 text-amber-300" />
+            <span>Open AI Studio</span>
+          </Link>
+        </div>
+
+        {/* Quick Helper Questions Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-2 no-scrollbar text-xs">
+          <span className="text-[11px] font-bold text-slate-400 shrink-0">⚡ Quick Helper Prompts:</span>
+          <Link href="/assistant" className="shrink-0 rounded-full bg-slate-800/90 hover:bg-purple-600/20 px-3 py-1.5 text-slate-300 hover:text-purple-300 border border-slate-700/80 transition">
+            🎟️ Which events are free of cost?
+          </Link>
+          <Link href="/assistant" className="shrink-0 rounded-full bg-slate-800/90 hover:bg-purple-600/20 px-3 py-1.5 text-slate-300 hover:text-purple-300 border border-slate-700/80 transition">
+            🏆 What is the prize money for Hackathon 2026?
+          </Link>
+          <Link href="/assistant" className="shrink-0 rounded-full bg-slate-800/90 hover:bg-purple-600/20 px-3 py-1.5 text-slate-300 hover:text-purple-300 border border-slate-700/80 transition">
+            📱 How do I get my QR pass?
+          </Link>
+          <Link href="/assistant" className="shrink-0 rounded-full bg-slate-800/90 hover:bg-purple-600/20 px-3 py-1.5 text-slate-300 hover:text-purple-300 border border-slate-700/80 transition">
+            🧠 Plan a 2-day workshop with AI
+          </Link>
+        </div>
+      </section>
+
       {/* 2. Featured Upcoming Events Showcase */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
