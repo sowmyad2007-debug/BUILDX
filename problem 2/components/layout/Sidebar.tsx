@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
-  Sparkles,
   MapPin,
   Package,
   Users,
@@ -28,6 +27,7 @@ import {
   Briefcase,
   GraduationCap
 } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 
 interface NavItem {
   label: string;
@@ -39,36 +39,7 @@ interface NavItem {
 
 export function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  useEffect(() => {
-    fetchUserData();
-  }, [pathname]);
-
-  const fetchUserData = async () => {
-    try {
-      const res = await fetch("/api/users/me");
-      const json = await res.json();
-      if (json.success && json.isAuthenticated && json.user) {
-        setCurrentUser(json.user);
-      } else {
-        setCurrentUser(null);
-      }
-    } catch {
-      // Fallback
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      setCurrentUser(null);
-      router.push("/login");
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { user, logout } = useAuth();
 
   const studentNav: NavItem[] = [
     { label: "9 Campus Events", href: "/events", icon: Calendar, badge: "Catalog", badgeColor: "bg-blue-500/20 text-blue-400 border border-blue-500/30" },
@@ -166,26 +137,26 @@ export function Sidebar() {
 
       {/* User Session & Authentication Box */}
       <div className="space-y-2 pt-2 border-t border-slate-800/80">
-        {currentUser ? (
+        {user ? (
           <div className="rounded-xl bg-slate-950 p-3 border border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 min-w-0">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold text-xs">
-                  {currentUser.name ? currentUser.name.charAt(0) : "U"}
+                  {user.name ? user.name.charAt(0) : "U"}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-slate-200 truncate">{currentUser.name}</p>
-                  <p className="text-[10px] text-slate-400 truncate">{currentUser.email}</p>
+                  <p className="text-xs font-bold text-slate-200 truncate">{user.name}</p>
+                  <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between pt-1 border-t border-slate-900">
               <span className="rounded-md bg-slate-800 px-1.5 py-0.5 text-[10px] font-semibold text-slate-300">
-                {currentUser.role}
+                {user.role}
               </span>
               <button
-                onClick={handleLogout}
+                onClick={() => logout()}
                 className="flex items-center gap-1 text-[11px] font-bold text-rose-400 hover:text-rose-300 transition"
               >
                 <LogOut className="h-3 w-3" />
