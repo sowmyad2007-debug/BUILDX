@@ -82,6 +82,32 @@ export default function EventsCatalogPage() {
         </Link>
       </div>
 
+      {/* AI Event Finder Helper Bar */}
+      <div className="rounded-2xl bg-gradient-to-r from-purple-950/50 via-slate-900 to-blue-950/50 p-4 border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-600/20 text-purple-400 border border-purple-500/30">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-white">AI Event Recommendation Helper</p>
+            <p className="text-[11px] text-slate-400">Need personalized event recommendations, pass guidance, or prize details?</p>
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.dispatchEvent(new CustomEvent("open-ai-helper", {
+                detail: { query: "Recommend the best technical fests, hackathons, and workshops with cash prize pools" }
+              }));
+            }
+          }}
+          className="shrink-0 flex items-center justify-center gap-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 px-4 py-2 text-xs font-bold text-white transition active:scale-95 shadow"
+        >
+          <span>Ask AI Helper</span>
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
       {/* Search & Filter Bar */}
       <div className="rounded-2xl bg-slate-900/90 p-5 border border-slate-800 shadow-xl space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">

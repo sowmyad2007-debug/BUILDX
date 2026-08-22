@@ -88,6 +88,30 @@ export function AiChatbotWidget() {
     }
   }, [messages, isOpen]);
 
+  useEffect(() => {
+    const handleOpenHelper = (e: any) => {
+      setIsOpen(true);
+      setShowHelperBubble(false);
+      if (e.detail?.query) {
+        handleSendMessage(e.detail.query);
+      }
+    };
+    window.addEventListener("open-ai-helper", handleOpenHelper);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey && e.key === "k") || (e.altKey && e.key === "a")) {
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("open-ai-helper", handleOpenHelper);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || input;
     if (!text.trim() || loading) return;

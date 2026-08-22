@@ -175,12 +175,28 @@ export default function EventDetailsPage() {
                 </p>
               </div>
 
-              <button
-                onClick={() => setShowRegModal(true)}
-                className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-xs font-black text-white shadow-lg hover:from-blue-500 hover:to-indigo-500 transition active:scale-95"
-              >
-                Register Now
-              </button>
+              <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                <button
+                  onClick={() => setShowRegModal(true)}
+                  className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-xs font-black text-white shadow-lg hover:from-blue-500 hover:to-indigo-500 transition active:scale-95 text-center"
+                >
+                  Register Now
+                </button>
+                <button
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("open-ai-helper", {
+                        detail: { query: `Tell me all details, prize money, rules, and schedule for ${event.name}` }
+                      }));
+                    }
+                  }}
+                  className="rounded-xl bg-purple-600/20 hover:bg-purple-600/30 px-3.5 py-3 text-xs font-bold text-purple-300 border border-purple-500/30 transition flex items-center justify-center gap-1.5"
+                  title="Ask AI Helper about this event"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+                  <span>AI Helper</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
