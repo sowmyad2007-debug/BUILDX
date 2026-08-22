@@ -8,6 +8,19 @@
 [![Prisma ORM](https://img.shields.io/badge/Prisma-5.17-2D3748.svg?style=flat&logo=prisma)](https://prisma.io)
 [![Vitest](https://img.shields.io/badge/Vitest-2.0-FCC72B.svg?style=flat&logo=vitest)](https://vitest.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Deployment: Live](https://img.shields.io/badge/Deployment-Vercel%20Live-brightgreen.svg)](https://campus-orbit-ai.vercel.app)
+
+---
+
+## 🌐 Live Permanent Deployment URLs
+
+- 🌟 **Public Live Website**: **[https://campus-orbit-ai.vercel.app](https://campus-orbit-ai.vercel.app)**
+- 🎟️ **9 Campus Events Catalog**: **[https://campus-orbit-ai.vercel.app/events](https://campus-orbit-ai.vercel.app/events)**
+- 🎓 **Student Dashboard & Passes**: **[https://campus-orbit-ai.vercel.app/dashboard](https://campus-orbit-ai.vercel.app/dashboard)**
+- 📋 **Organizer Planning Hub**: **[https://campus-orbit-ai.vercel.app/organizer/planning](https://campus-orbit-ai.vercel.app/organizer/planning)**
+- 🛡️ **Executive Admin Dashboard**: **[https://campus-orbit-ai.vercel.app/admin](https://campus-orbit-ai.vercel.app/admin)**
+- 🧪 **API Health Check**: **[https://campus-orbit-ai.vercel.app/api/health](https://campus-orbit-ai.vercel.app/api/health)**
+- 📖 **Interactive API Documentation**: **[https://campus-orbit-ai.vercel.app/api-docs](https://campus-orbit-ai.vercel.app/api-docs)**
 
 ---
 
