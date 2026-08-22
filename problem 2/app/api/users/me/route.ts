@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/database/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
-  const user = db.currentUser || Array.from(db.users.values())[0];
+  const user = db.currentUser;
   if (!user) {
-    return NextResponse.json({ success: false, user: null }, { status: 401 });
+    return NextResponse.json({
+      success: true,
+      isAuthenticated: false,
+      user: null,
+    });
   }
 
   return NextResponse.json({
     success: true,
+    isAuthenticated: true,
     user: {
       id: user.id,
       name: user.name,
