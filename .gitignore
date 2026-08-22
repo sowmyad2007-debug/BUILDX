@@ -11,3 +11,4 @@ bore.zip
 .vscode/
 .idea/
 *.log
+.vercel

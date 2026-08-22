@@ -1,0 +1,2 @@
+# CAMPUS ORBIT Dependencies (Standard Library Python + WSGI optional)
+urllib3>=2.0.0
