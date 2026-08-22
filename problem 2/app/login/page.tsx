@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, User, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, LogIn } from "lucide-react";
+import { Lock, Mail, User, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, LogIn, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 export default function LoginPage() {
@@ -117,8 +117,21 @@ export default function LoginPage() {
         {/* Form Login */}
         <form onSubmit={handleLogin} className="rounded-2xl bg-slate-900 p-6 border border-slate-800 shadow-2xl space-y-4">
           {error && (
-            <div className="rounded-xl bg-rose-500/10 p-3 text-xs text-rose-400 border border-rose-500/30">
-              {error}
+            <div className="rounded-2xl bg-rose-500/10 p-3.5 border border-rose-500/30 text-xs space-y-2.5 animate-fadeIn">
+              <div className="flex items-center gap-2 text-rose-400 font-bold">
+                <AlertTriangle className="h-4 w-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-rose-500/20">
+                <span className="text-[11px] text-slate-300">Wrong password or forgot it?</span>
+                <Link
+                  href="/forgot-password"
+                  className="inline-flex items-center gap-1 rounded-lg bg-rose-600/20 hover:bg-rose-600/40 px-2.5 py-1 text-[11px] font-bold text-rose-300 border border-rose-500/30 transition"
+                >
+                  <span>🔑 Reset Password</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
             </div>
           )}
 
@@ -140,7 +153,9 @@ export default function LoginPage() {
           <div className="space-y-1.5 text-xs">
             <div className="flex items-center justify-between">
               <label className="font-semibold text-slate-400">Password</label>
-              <span className="text-[11px] text-blue-400 hover:underline cursor-pointer">Forgot?</span>
+              <Link href="/forgot-password" className="text-[11px] font-semibold text-blue-400 hover:text-blue-300 hover:underline">
+                Forgot password?
+              </Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />

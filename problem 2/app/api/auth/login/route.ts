@@ -40,7 +40,17 @@ export async function POST(req: NextRequest) {
     const user = Array.from(db.users.values()).find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (!user) {
       return NextResponse.json(
-        { success: false, error: "No user found with this email address." },
+        { success: false, error: "No user found with this email address. Please check your email or register." },
+        { status: 401 }
+      );
+    }
+
+    if (user.password && user.password !== password) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Incorrect password! If you don't remember your password, please click 'Reset Password' to recover your account." 
+        },
         { status: 401 }
       );
     }

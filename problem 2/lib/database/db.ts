@@ -85,6 +85,13 @@ export interface EventRecord {
   communicationRequirements?: any;
   permissionRequirements?: any;
   schedule?: any[];
+  prizePool?: string;
+  winnerPrizes?: {
+    position: string;
+    amount: string;
+    description: string;
+    perks?: string[];
+  }[];
   createdAt: string;
   updatedAt: string;
 }
@@ -306,6 +313,8 @@ class MemoryDatabase {
         transportRequirements: evt.transportRequirements,
         communicationRequirements: evt.communicationRequirements,
         permissionRequirements: evt.permissionRequirements,
+        prizePool: evt.prizePool,
+        winnerPrizes: evt.winnerPrizes,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };

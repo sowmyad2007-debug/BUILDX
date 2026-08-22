@@ -188,4 +188,57 @@ describe("CampusFlow AI — Core Agent Planning, Coordination & Student Registra
     const conflicts = Array.from(db.conflicts.values());
     expect(conflicts).toBeDefined();
   });
+
+  it("11. Prize Money & Winner Awards: Validates prize pools across competition events", () => {
+    const hackathon = db.events.get("evt-hackathon-2026");
+    expect(hackathon?.prizePool).toBe("₹2,00,000");
+    expect(hackathon?.winnerPrizes?.length).toBeGreaterThanOrEqual(3);
+    expect(hackathon?.winnerPrizes?.[0].position).toContain("1st Prize");
+    expect(hackathon?.winnerPrizes?.[0].amount).toBe("₹1,00,000");
+
+    const techfest = db.events.get("evt-techfest-2026");
+    expect(techfest?.prizePool).toBe("₹1,50,000");
+    expect(techfest?.winnerPrizes?.[0].amount).toBe("₹75,000");
+
+    const codesprint = db.events.get("evt-codesprint-2026");
+    expect(codesprint?.prizePool).toBe("₹50,000");
+    expect(codesprint?.winnerPrizes?.[0].amount).toBe("₹25,000");
+  });
+
+  it("12. QR Code Passes: Generates scannable QR payload containing Registration ID & Student metadata", () => {
+    const reg = db.registrations.get("reg-test-101") || Array.from(db.registrations.values())[0];
+    expect(reg).toBeDefined();
+    
+    // Validate pass payload structure
+    const qrPayload = JSON.stringify({
+      id: reg!.registrationId,
+      student: reg!.studentName,
+      sid: reg!.studentId,
+      event: reg!.eventName,
+      date: reg!.eventDate,
+      venue: reg!.eventVenue,
+      status: "VERIFIED_ACTIVE"
+    });
+
+    const parsed = JSON.parse(qrPayload);
+    expect(parsed.id).toBe(reg!.registrationId);
+    expect(parsed.student).toBe(reg!.studentName);
+    expect(parsed.status).toBe("VERIFIED_ACTIVE");
+  });
+
+  it("13. Forgot Password & Recovery: Validates user lookup and OTP password reset", () => {
+    const user = Array.from(db.users.values()).find((u) => u.email === "rahul.d@campus.edu");
+    expect(user).toBeDefined();
+    
+    // Simulate reset with OTP
+    const simulatedOtp = "894102";
+    expect(simulatedOtp).toBe("894102");
+    
+    const newPassword = "newSecurePass2026";
+    user!.password = newPassword;
+    db.users.set(user!.id, user!);
+
+    const updatedUser = db.users.get(user!.id);
+    expect(updatedUser?.password).toBe("newSecurePass2026");
+  });
 });

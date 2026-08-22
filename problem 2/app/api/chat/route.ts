@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     if (process.env.AI_PROVIDER === "gemini" && geminiKey) {
       try {
         const systemPrompt = `You are CampusFlow AI, an expert autonomous collegiate event planning & coordination agent for college hackathons, technical fests, workshops, and symposiums. 
-Available Events: ${events.map((e) => `${e.name} (${e.priceFormatted}, ${e.venueName})`).join("; ")}.
+Available Events: ${events.map((e) => `${e.name} (${e.priceFormatted || 'Free'}, ${e.venueName || e.location})`).join("; ")}.
 Venues: ${venues.map((v) => `${v.name} (Cap: ${v.capacity})`).join("; ")}.
 Active Conflicts: ${conflicts.length}.
 Be concise, professional, helpful, and reference campus locations, schedules, and agentic workflows.`;
@@ -69,15 +69,48 @@ Be concise, professional, helpful, and reference campus locations, schedules, an
 
     // 2. Intelligent Deterministic Fallback Engine (Guaranteed zero-error response)
     if (!reply) {
-      if (query.includes("free") || query.includes("cost") || query.includes("price") || query.includes("fee") || query.includes("ticket")) {
-        const freeEvents = events.filter((e) => e.price === 0);
-        const paidEvents = events.filter((e) => e.price > 0);
+      if (query.includes("prize") || query.includes("award") || query.includes("winner") || query.includes("cash") || query.includes("trophy") || query.includes("money")) {
+        const eventsWithPrizes = events.filter((e) => e.prizePool);
+        reply = `🏆 **Campus Event Prize Pools & Winner Awards**:\n\n` +
+          eventsWithPrizes.map((e) => `• **${e.name}** — **Total Prize Pool: ${e.prizePool}**\n  Prizes: ${e.winnerPrizes?.map((p) => `${p.position}: ${p.amount}`).join(", ") || "Cash awards & trophies"}`).join("\n\n") +
+          `\n\nAll competition winners receive rolling trophies, cash transfer awards, and official certificates of merit!`;
+
+        suggestedActions = [
+          { label: "View Hackathon Prizes", href: "/events/evt-hackathon-2026" },
+          { label: "View TechFest Prizes", href: "/events/evt-techfest-2026" },
+          { label: "Explore All Events", href: "/events" },
+        ];
+      } else if (query.includes("qr") || query.includes("pass") || query.includes("badge") || query.includes("ticket id")) {
+        reply = `📱 **Digital QR Passes for Registered Events**:\n\n` +
+          `• Every registered student receives a unique digital pass ID (e.g. \`REG-TEC26-8941\`) and a **high-resolution scannable QR Code**.\n` +
+          `• You can view and download your QR Code passes anytime under **My Passes & Dashboard** ([/dashboard](/dashboard)).\n` +
+          `• Simply present your phone screen at the venue entrance scanner for instant verification!`;
+
+        suggestedActions = [
+          { label: "Open My Passes & QR", href: "/dashboard" },
+          { label: "Register for an Event", href: "/events" },
+        ];
+      } else if (query.includes("forgot password") || query.includes("reset password") || query.includes("wrong password")) {
+        reply = `🔑 **Password Recovery & Reset**:\n\n` +
+          `If you forgot your password or entered the wrong password:\n` +
+          `1. Go to the **Forgot Password** page ([/forgot-password](/forgot-password)).\n` +
+          `2. Enter your registered campus email (e.g. \`rahul.d@campus.edu\`).\n` +
+          `3. Enter the 6-digit OTP code (\`894102\`) sent to your email.\n` +
+          `4. Choose a new secure password and log in immediately!`;
+
+        suggestedActions = [
+          { label: "Reset Password Now", href: "/forgot-password" },
+          { label: "Go to Sign In", href: "/login" },
+        ];
+      } else if (query.includes("free") || query.includes("cost") || query.includes("price") || query.includes("fee") || query.includes("ticket")) {
+        const freeEvents = events.filter((e) => (e.price ?? 0) === 0);
+        const paidEvents = events.filter((e) => (e.price ?? 0) > 0);
 
         reply = `🎟️ **Campus Event Pricing Overview**:\n\n` +
           `**Free Campus Events:**\n` +
-          freeEvents.map((e) => `• **${e.name}** (${e.category}) — Venue: ${e.venueName}, Seats: ${e.registeredCount}/${e.capacity}`).join("\n") +
+          freeEvents.map((e) => `• **${e.name}** (${e.category || "General"}) — Venue: ${e.venueName || e.location}, Seats: ${e.registeredCount || 0}/${e.capacity || e.attendeeCount}`).join("\n") +
           `\n\n**Paid Ticket Events:**\n` +
-          paidEvents.map((e) => `• **${e.name}** (${e.priceFormatted}) — Venue: ${e.venueName}, Deadline: ${e.date}`).join("\n") +
+          paidEvents.map((e) => `• **${e.name}** (${e.priceFormatted || `₹${e.price}`}) — Venue: ${e.venueName || e.location}, Deadline: ${e.date || e.startDate}`).join("\n") +
           `\n\nYou can register for any of these directly from the **Events Catalog**!`;
 
         suggestedActions = [
@@ -86,12 +119,14 @@ Be concise, professional, helpful, and reference campus locations, schedules, an
         ];
       } else if (query.includes("techfest") || query.includes("tech fest")) {
         const tf = events.find((e) => e.id === "evt-techfest-2026") || events[0];
+        const tfCapacity = tf.capacity || tf.attendeeCount || 650;
+        const tfRegistered = tf.registeredCount || 480;
         reply = `🎪 **${tf.name} Details**:\n\n` +
-          `• **Date & Time:** ${tf.date} (${tf.startTime} - ${tf.endTime})\n` +
-          `• **Venue:** ${tf.venueName}\n` +
-          `• **Registration Fee:** ${tf.priceFormatted}\n` +
-          `• **Capacity & Occupancy:** ${tf.registeredCount} registered / ${tf.capacity} seats (${Math.round((tf.registeredCount / tf.capacity) * 100)}% booked)\n` +
-          `• **Organized By:** ${tf.organizer}\n` +
+          `• **Date & Time:** ${tf.date || tf.startDate} (${tf.startTime || "09:00 AM"} - ${tf.endTime || "06:00 PM"})\n` +
+          `• **Venue:** ${tf.venueName || tf.location}\n` +
+          `• **Registration Fee:** ${tf.priceFormatted || "₹150"}\n` +
+          `• **Capacity & Occupancy:** ${tfRegistered} registered / ${tfCapacity} seats (${Math.round((tfRegistered / tfCapacity) * 100)}% booked)\n` +
+          `• **Organized By:** ${tf.organizer || "CSE Department"}\n` +
           `• **Readiness Score:** ${readiness.overallScore}% (Mathematically computed)\n\n` +
           `Highlights: 6 specialized tracks, paper presentations, drone racing, and guest keynotes.`;
 
@@ -129,7 +164,7 @@ Be concise, professional, helpful, and reference campus locations, schedules, an
       } else if (query.includes("conflict") || query.includes("collision") || query.includes("double book")) {
         if (conflicts.length > 0) {
           reply = `⚠️ **Active Constraint Collisions Detected (${conflicts.length})**:\n\n` +
-            conflicts.map((c) => `• **${c.title}** (${c.severity} Severity)\n  Description: ${c.description}\n  Recommendation: ${c.resolutionSuggestions[0] || "Relocate to Seminar Hall B"}`).join("\n\n") +
+            conflicts.map((c) => `• **${c.title}** (${c.severity} Severity)\n  Description: ${c.description}\n  Recommendation: ${c.recommendedAlternatives?.[0]?.label || "Relocate to Seminar Hall B"}`).join("\n\n") +
             `\n\nOur **Recommendation Engine** has calculated alternative venues that fit capacity and hardware requirements with zero schedule clash.`;
         } else {
           reply = `✅ **No Active Constraint Collisions!** All campus venues, hardware inventory, and volunteer rosters are 100% conflict-free.`;
@@ -189,11 +224,11 @@ Be concise, professional, helpful, and reference campus locations, schedules, an
       } else if (query.includes("readiness") || query.includes("score") || query.includes("checklist")) {
         reply = `📊 **Calculated Event Readiness Dashboard**:\n\n` +
           `• **Overall Readiness Score:** **${readiness.overallScore}%**\n` +
-          `• **Venue Binding:** ${readiness.breakdown.venue}% (Main Auditorium confirmed)\n` +
-          `• **Hardware Allocation:** ${readiness.breakdown.equipment}% (Projectors, Mics, Wi-Fi 6)\n` +
-          `• **Volunteer Staffing:** ${readiness.breakdown.volunteers}%\n` +
-          `• **Task Milestones:** ${readiness.breakdown.tasks}%\n` +
-          `• **Governance Approvals:** ${readiness.breakdown.approvals}%`;
+          `• **Venue Binding:** ${readiness.venueScore}% (Main Auditorium confirmed)\n` +
+          `• **Hardware Allocation:** ${readiness.equipmentScore}% (Projectors, Mics, Wi-Fi 6)\n` +
+          `• **Volunteer Staffing:** ${readiness.volunteerScore}%\n` +
+          `• **Task Milestones:** ${readiness.taskScore}%\n` +
+          `• **Governance Approvals:** ${readiness.approvalScore}%`;
 
         suggestedActions = [
           { label: "View Readiness Dashboard", href: "/dashboard" },

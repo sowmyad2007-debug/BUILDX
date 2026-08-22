@@ -88,6 +88,13 @@ export interface InitialCampusEvent {
     approvedBy?: string;
   }[];
   rules: string[];
+  prizePool?: string;
+  winnerPrizes?: Array<{
+    position: string;
+    amount: string;
+    description: string;
+    perks?: string[];
+  }>;
   schedule: Array<{
     time: string;
     activity: string;
@@ -280,6 +287,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 4, channels: ["Campus App", "Email", "WhatsApp Squad Group"] },
     permissionRequirements: [{ type: "Dean Approval", status: "APPROVED", approvedBy: "Dean of Student Affairs" }, { type: "Acoustics Clearance", status: "APPROVED" }],
     rules: ["Valid college student ID card mandatory.", "Attendees must register individually or as a team of up to 4.", "Formal/smart casual attire for keynote sessions."],
+    prizePool: "₹1,50,000",
+    winnerPrizes: [
+      { position: "1st Prize (Grand Winner)", amount: "₹75,000", description: "Gold Trophy + Direct Industry Internship Referral", perks: ["Gold Trophy", "Certificate of Excellence", "Tech Sponsor Swag"] },
+      { position: "2nd Prize (Runner Up)", amount: "₹45,000", description: "Silver Trophy + Hardware Dev Kit", perks: ["Silver Trophy", "Certificate of Merit"] },
+      { position: "3rd Prize (2nd Runner Up)", amount: "₹30,000", description: "Bronze Trophy + Tech Vouchers", perks: ["Bronze Trophy", "Certificate of Merit"] },
+    ],
     schedule: [
       { time: "09:00 AM", activity: "Registration & Badge Verification", venue: "Main Auditorium Lobby" },
       { time: "09:30 AM", activity: "Grand Inaugural Ceremony & Keynote", venue: "Main Auditorium", speakerOrLead: "Dr. Arvind Swaminathan" },
@@ -318,6 +331,14 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 6, channels: ["Discord Server", "Campus App", "SMS Emergency Broadcast"] },
     permissionRequirements: [{ type: "Overnight Campus Stay Permit", status: "APPROVED", approvedBy: "Campus Registrar" }, { type: "Midnight Food Catering Clearance", status: "APPROVED" }],
     rules: ["Teams of 2 to 4 members.", "Fresh codebase created after problem statement reveal.", "Use of AI tools encouraged with proper code attribution."],
+    prizePool: "₹2,00,000",
+    winnerPrizes: [
+      { position: "1st Prize (Grand Winner)", amount: "₹1,00,000", description: "Gold Trophy + Direct Venture Seed Pitch + ₹50k AWS Cloud Credits", perks: ["Gold Trophy", "Incubator Fast-Track", "AWS Activate Credits"] },
+      { position: "2nd Prize (1st Runner Up)", amount: "₹60,000", description: "Silver Trophy + Cloud Developer Subscriptions", perks: ["Silver Trophy", "Developer Goodie Box"] },
+      { position: "3rd Prize (2nd Runner Up)", amount: "₹40,000", description: "Bronze Trophy + Tech Vouchers", perks: ["Bronze Trophy", "Certificate of Honor"] },
+      { position: "Special: Best All-Women Team", amount: "₹15,000", description: "Women in Tech Champions Trophy", perks: ["Trophy", "Mentorship Fast-Track"] },
+      { position: "Special: Most Innovative GenAI Hack", amount: "₹10,000", description: "AI Excellence Plaque + GPU Credits", perks: ["Plaque", "GPU Credits"] },
+    ],
     schedule: [
       { time: "08:00 AM", activity: "Hacker Check-in & Team Registration", venue: "Main Auditorium" },
       { time: "09:30 AM", activity: "Problem Statements Revealed & Hacking Begins", venue: "Main Auditorium" },
@@ -357,6 +378,11 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 3, channels: ["Email", "Campus Portal"] },
     permissionRequirements: [{ type: "Dean Clearance", status: "APPROVED" }],
     rules: ["Professional executive attire required.", "Delegates must wear VIP summit lanyards.", "Q&A via Slido platform."],
+    prizePool: "₹50,000",
+    winnerPrizes: [
+      { position: "Best Research Paper", amount: "₹30,000", description: "IEEE Publication Sponsorship + Gold Citation", perks: ["Gold Citation", "IEEE Indexing Grant"] },
+      { position: "Outstanding AI Prototype", amount: "₹20,000", description: "AI Center Research Grant + Lab Fellowship", perks: ["Lab Fellowship", "Certificate of Merit"] },
+    ],
     schedule: [
       { time: "09:30 AM", activity: "Welcome Address & Lighting of Lamp", venue: "Main Auditorium" },
       { time: "10:15 AM", activity: "Keynote: Multi-Agent Systems in 2026", venue: "Main Auditorium", speakerOrLead: "Google DeepMind Fellow" },
@@ -395,6 +421,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 2, channels: ["Discord", "HackerRank Board"] },
     permissionRequirements: [{ type: "Lab Access Permit", status: "APPROVED" }],
     rules: ["Individual participation only.", "Plagiarism detection via MOSS active.", "Supported languages: C++, Java, Python, Rust, Go."],
+    prizePool: "₹50,000",
+    winnerPrizes: [
+      { position: "1st Place (Grand Master)", amount: "₹25,000", description: "Gold Trophy + Direct Fast-Track Interview Shortlist", perks: ["Gold Trophy", "Certificate of Grand Mastery", "Company Shortlist"] },
+      { position: "2nd Place (Master Coder)", amount: "₹15,000", description: "Silver Plaque + Mechanical Keyboard Kit", perks: ["Silver Plaque", "Hardware Kit"] },
+      { position: "3rd Place (Expert Coder)", amount: "₹10,000", description: "Bronze Plaque + Premium Cloud Dev Sub", perks: ["Bronze Plaque", "Dev Voucher"] },
+    ],
     schedule: [
       { time: "02:00 PM", activity: "Environment Setup & Sandbox Test", venue: "Computer Lab 1 & 2" },
       { time: "02:30 PM", activity: "Contest Launch: 6 Hard Algorithmic Problems", venue: "Computer Lab 1 & 2" },
@@ -431,6 +463,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 2, channels: ["Campus App"] },
     permissionRequirements: [{ type: "Safety & Hazard Clearance", status: "APPROVED" }],
     rules: ["Robot dimensions must adhere to 30x30x30 cm standard.", "Maximum weight 5 kg for combat bots.", "Safety cutoff switch mandatory."],
+    prizePool: "₹75,000",
+    winnerPrizes: [
+      { position: "RoboWars Heavyweight Champion", amount: "₹40,000", description: "Gold Championship Trophy + Hardware Sponsorship", perks: ["Gold Trophy", "Robotics Component Kit", "Certificate"] },
+      { position: "Autonomous Maze Navigation Winner", amount: "₹25,000", description: "Silver Trophy + ROS2 Robotics Kit", perks: ["Silver Trophy", "ROS Dev Board"] },
+      { position: "Best Innovative Mechanical Design", amount: "₹10,000", description: "Innovation Citation & Lab Grant", perks: ["Innovation Plaque", "Lab Access Pass"] },
+    ],
     schedule: [
       { time: "10:00 AM", activity: "Robot Dimension & Weight Inspection", venue: "Innovation Lab" },
       { time: "11:00 AM", activity: "Autonomous Maze Navigation Heats", venue: "Innovation Lab Arena" },
@@ -468,6 +506,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 5, channels: ["T&P Portal", "Email Alert"] },
     permissionRequirements: [{ type: "Dean of Academics Clearance", status: "APPROVED" }],
     rules: ["Eligible for pre-final and final year registered students only.", "Formal business attire mandatory.", "Carry 5 printed copies of verified resume."],
+    prizePool: "Offers Up to ₹45 LPA",
+    winnerPrizes: [
+      { position: "Top Tier-1 Dream Job CTC", amount: "₹45,00,000 / yr", description: "Full-Time SWE / AI Engineer Offer with Stock Units", perks: ["Full-Time Offer", "Relocation Allowance", "Joining Bonus"] },
+      { position: "Average Core Tech Package", amount: "₹18,50,000 / yr", description: "Product Startup & FinTech Quant Roles", perks: ["PPO Guarantee", "Health Insurance"] },
+      { position: "Star Intern Stipend", amount: "₹1,20,000 / mo", description: "6-Month Pre-Placement Internship", perks: ["Stipend", "Direct PPO Review"] },
+    ],
     schedule: [
       { time: "08:30 AM", activity: "Student Registration & Roll Call", venue: "Seminar Hall A" },
       { time: "09:30 AM", activity: "Corporate Pre-Placement Talks (PPTs)", venue: "Seminar Hall A" },
@@ -505,6 +549,11 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 2, channels: ["Email", "Campus App"] },
     permissionRequirements: [{ type: "Lab Booking Permit", status: "APPROVED" }],
     rules: ["Bring personal laptop with Node.js 20+ and VS Code installed.", "GitHub repository access provided at check-in.", "Verified digital certificates awarded upon lab completion."],
+    prizePool: "₹25,000",
+    winnerPrizes: [
+      { position: "Best Workshop Project Hack", amount: "₹15,000", description: "Pro Vercel Credits + AI Developer Toolkit", perks: ["Cash Award", "Cloud Subscriptions"] },
+      { position: "Fastest Clean Deployment", amount: "₹10,000", description: "Developer Swag Box & Certificate of Excellence", perks: ["Swag Box", "Certificate"] },
+    ],
     schedule: [
       { time: "10:00 AM", activity: "Check-in & Starter Code Clone", venue: "Seminar Hall B" },
       { time: "10:30 AM", activity: "Module 1: Next.js 14 App Router & API Route Handlers", venue: "Seminar Hall B", speakerOrLead: "Tarun Saxena" },
@@ -542,6 +591,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 6, channels: ["Campus App", "Instagram Live", "Posters"] },
     permissionRequirements: [{ type: "Late Night Sound Clearance", status: "APPROVED", approvedBy: "City Police & Registrar" }, { type: "Food Stall Fire Permit", status: "APPROVED" }],
     rules: ["QR ID verification mandatory at all perimeter gates.", "Alcohol, tobacco, and fireworks strictly prohibited.", "Follow designated entrance/exit crowd lanes."],
+    prizePool: "₹1,00,000",
+    winnerPrizes: [
+      { position: "Battle of the Bands Winner", amount: "₹45,000", description: "Champions Trophy + Professional Studio Recording Session", perks: ["Rolling Trophy", "Studio Session", "Pro Certificate"] },
+      { position: "Inter-College Dance Crew Champions", amount: "₹35,000", description: "Gold Trophy + National Fest Direct Entry", perks: ["Gold Trophy", "Direct Entry"] },
+      { position: "Neo-Campus Fashion Show Winner", amount: "₹20,000", description: "Designer Trophy & Model Portfolio Feature", perks: ["Trophy", "Feature Shoot"] },
+    ],
     schedule: [
       { time: "04:00 PM", activity: "Street Dance & Flashmob Showcase", venue: "Central Quad" },
       { time: "05:30 PM", activity: "Inter-College Battle of the Bands", venue: "Open Amphitheatre" },
@@ -578,6 +633,12 @@ export const INITIAL_9_CAMPUS_EVENTS: InitialCampusEvent[] = [
     communicationRequirements: { announcementsCount: 4, channels: ["Campus App", "PA Sound Announcements"] },
     permissionRequirements: [{ type: "Sports Board Approval", status: "APPROVED" }],
     rules: ["Appropriate sports jersey and non-marking footwear required for indoor courts.", "Medical fitness certificate must be signed before contact sports."],
+    prizePool: "₹60,000",
+    winnerPrizes: [
+      { position: "Inter-Department Football Champions", amount: "₹25,000", description: "Gold Rolling Championship Cup + Individual Medals", perks: ["Gold Cup", "Gold Medals", "Champion Jerseys"] },
+      { position: "Basketball Tournament Winners", amount: "₹20,000", description: "Championship Trophy & Certificates", perks: ["Silver Trophy", "Medals"] },
+      { position: "Best University Athlete (Male & Female)", amount: "₹15,000", description: "Athletic Excellence Scholarship + Blazer Crest", perks: ["Scholarship", "Honorary Crest"] },
+    ],
     schedule: [
       { time: "08:00 AM", activity: "Athletes March Past & Torch Lighting", venue: "Open Ground" },
       { time: "09:30 AM", activity: "Track & Field Heats (100m, 400m, 4x100m Relay)", venue: "Open Ground Track" },

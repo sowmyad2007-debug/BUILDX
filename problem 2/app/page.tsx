@@ -22,7 +22,8 @@ import {
   SlidersHorizontal,
   FileCheck,
   Bell,
-  AlertTriangle
+  AlertTriangle,
+  Trophy
 } from "lucide-react";
 
 export default function HomePage() {
@@ -132,10 +133,16 @@ export default function HomePage() {
                     className="h-full w-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
                     <span className="rounded-md bg-slate-900/90 px-2 py-0.5 text-[10px] font-bold text-blue-400 border border-slate-700">
                       {evt.category || evt.type}
                     </span>
+                    {evt.prizePool && (
+                      <span className="rounded-md bg-amber-500 px-2 py-0.5 text-[10px] font-black text-slate-950 shadow flex items-center gap-1">
+                        <Trophy className="h-2.5 w-2.5 text-slate-950" />
+                        <span>{evt.prizePool}</span>
+                      </span>
+                    )}
                   </div>
                   <div className="absolute top-3 right-3">
                     <span className="rounded-md bg-emerald-500 px-2 py-0.5 text-[10px] font-bold text-slate-950">

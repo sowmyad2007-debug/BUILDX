@@ -22,8 +22,13 @@ import {
   DollarSign,
   QrCode,
   X,
-  CreditCard
+  CreditCard,
+  Trophy,
+  Award,
+  Medal,
+  Download
 } from "lucide-react";
+import { QrCodePassModal, RegistrationPassData } from "@/components/passes/QrCodePassModal";
 
 export default function EventDetailsPage() {
   const params = useParams();
@@ -32,6 +37,7 @@ export default function EventDetailsPage() {
 
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [activePassForQr, setActivePassForQr] = useState<RegistrationPassData | null>(null);
 
   // Registration Modal State
   const [showRegModal, setShowRegModal] = useState(false);
@@ -254,6 +260,70 @@ export default function EventDetailsPage() {
             </div>
           </div>
 
+          {/* Winner Prizes & Awards Showcase */}
+          {event.winnerPrizes && event.winnerPrizes.length > 0 && (
+            <div className="rounded-2xl bg-gradient-to-b from-amber-500/10 via-slate-900 to-slate-900 p-6 border border-amber-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                    <Trophy className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-bold text-white flex items-center gap-2">
+                      <span>Winner Prizes & Cash Pool</span>
+                      <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-black text-amber-400 border border-amber-500/30">
+                        {event.prizePool}
+                      </span>
+                    </h2>
+                    <p className="text-xs text-slate-400">Cash awards, rolling trophies, direct incubation, and sponsor perks</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                {event.winnerPrizes.map((prize: any, idx: number) => (
+                  <div
+                    key={idx}
+                    className={`rounded-xl p-4 space-y-2 border transition ${
+                      idx === 0
+                        ? "bg-gradient-to-b from-amber-500/15 to-slate-950 border-amber-500/40 shadow-lg"
+                        : idx === 1
+                        ? "bg-slate-950 border-slate-700 hover:border-slate-500"
+                        : "bg-slate-950 border-slate-800"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        {idx === 0 ? "🥇 1st Place" : idx === 1 ? "🥈 2nd Place" : idx === 2 ? "🥉 3rd Place" : "🎖️ Special Award"}
+                      </span>
+                      <span className="font-mono text-sm font-black text-amber-400">
+                        {prize.amount}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-xs font-bold text-white">{prize.position}</h4>
+                      <p className="text-[11px] text-slate-300 mt-0.5">{prize.description}</p>
+                    </div>
+
+                    {prize.perks && prize.perks.length > 0 && (
+                      <div className="pt-2 flex flex-wrap gap-1 border-t border-slate-800">
+                        {prize.perks.map((perk: string, pIdx: number) => (
+                          <span
+                            key={pIdx}
+                            className="rounded-md bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300 border border-slate-700"
+                          >
+                            ✓ {perk}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Rules & Guidelines */}
           <div className="rounded-2xl bg-slate-900 p-6 border border-slate-800 space-y-4">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -383,16 +453,25 @@ export default function EventDetailsPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row gap-2.5 pt-2">
+                  <button
+                    onClick={() => {
+                      setActivePassForQr(regSuccess);
+                    }}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-2.5 text-xs font-bold text-white hover:from-blue-500 hover:to-indigo-500 transition shadow"
+                  >
+                    <QrCode className="h-4 w-4" />
+                    <span>View & Download QR Pass</span>
+                  </button>
                   <Link
                     href="/dashboard"
-                    className="flex-1 rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white text-center hover:bg-blue-500 transition"
+                    className="rounded-xl bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-300 text-center hover:bg-slate-700 transition border border-slate-700"
                   >
-                    View in My Dashboard
+                    My Dashboard
                   </Link>
                   <button
                     onClick={() => { setShowRegModal(false); setRegSuccess(null); }}
-                    className="rounded-xl bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-700 transition"
+                    className="rounded-xl bg-slate-800 px-3 py-2.5 text-xs font-bold text-slate-400 hover:text-white transition border border-slate-700"
                   >
                     Close
                   </button>
@@ -506,6 +585,12 @@ export default function EventDetailsPage() {
           </div>
         </div>
       )}
+
+      {/* Scannable Registration QR Code Pass Modal */}
+      <QrCodePassModal
+        passData={activePassForQr}
+        onClose={() => setActivePassForQr(null)}
+      />
     </div>
   );
 }

@@ -18,8 +18,10 @@ import {
   ShieldCheck,
   Zap,
   Activity,
-  Layers
+  Layers,
+  Ticket
 } from "lucide-react";
+import { QrCodePassModal, RegistrationPassData } from "@/components/passes/QrCodePassModal";
 
 export default function DashboardPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -27,6 +29,7 @@ export default function DashboardPage() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [selectedPassForQr, setSelectedPassForQr] = useState<RegistrationPassData | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -231,14 +234,24 @@ export default function DashboardPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3.5 text-right">
-                      <button
-                        onClick={() => handleCancelRegistration(reg.id)}
-                        disabled={cancellingId === reg.id}
-                        className="rounded-lg p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
-                        title="Cancel Registration"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => setSelectedPassForQr(reg)}
+                          className="flex items-center gap-1 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 px-2.5 py-1 text-xs font-bold text-blue-400 border border-blue-500/30 transition active:scale-95"
+                          title="View Digital QR Pass"
+                        >
+                          <QrCode className="h-3.5 w-3.5" />
+                          <span>QR Pass</span>
+                        </button>
+                        <button
+                          onClick={() => handleCancelRegistration(reg.id)}
+                          disabled={cancellingId === reg.id}
+                          className="rounded-lg p-1 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                          title="Cancel Registration"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -247,6 +260,12 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Scannable QR Code Pass Modal */}
+      <QrCodePassModal
+        passData={selectedPassForQr}
+        onClose={() => setSelectedPassForQr(null)}
+      />
 
       {/* Notifications & Announcements Feed */}
       <div className="rounded-2xl bg-slate-900 p-6 border border-slate-800 space-y-4">
