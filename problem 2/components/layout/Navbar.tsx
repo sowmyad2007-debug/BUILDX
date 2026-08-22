@@ -105,6 +105,10 @@ export function Navbar() {
           <Link href="/organizer/create-event" className="rounded-lg px-3 py-1.5 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 transition">
             AI Event Intake
           </Link>
+          <Link href="/assistant" className="flex items-center gap-1 rounded-lg bg-purple-500/10 px-3 py-1.5 text-purple-300 hover:bg-purple-500/20 border border-purple-500/30 transition">
+            <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+            <span>AI Assistant</span>
+          </Link>
           <Link href="/organizer/planning" className="rounded-lg px-3 py-1.5 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 transition">
             Planning Studio
           </Link>
@@ -232,6 +236,10 @@ export function Navbar() {
             </Link>
             <Link href="/organizer/planning" onClick={() => setIsMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-purple-900/30 text-purple-300 border border-purple-800">
               ⚙️ Planning
+            </Link>
+            <Link href="/assistant" onClick={() => setIsMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-purple-900/40 text-purple-300 border border-purple-800 flex items-center gap-1.5 col-span-2">
+              <Sparkles className="h-4 w-4 text-purple-400" />
+              <span>🤖 AI Event Chatbot Assistant</span>
             </Link>
             <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-emerald-900/30 text-emerald-300 border border-emerald-800 col-span-2">
               🛡️ Admin Dashboard

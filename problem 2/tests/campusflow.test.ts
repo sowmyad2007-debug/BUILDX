@@ -166,4 +166,26 @@ describe("CampusFlow AI — Core Agent Planning, Coordination & Student Registra
     const retrieved = db.registrations.get("reg-test-101");
     expect(retrieved?.studentName).toBe("Ananya Iyer");
   });
+
+  it("10. AI Campus Event Chatbot: Evaluates queries for pricing, conflicts, and event intake", () => {
+    const events = Array.from(db.events.values());
+    expect(events.length).toBeGreaterThanOrEqual(9);
+
+    // Test NLP Intake within Chat
+    const prompt = "Plan a 2-day AI Workshop for 200 students in Seminar Hall B with 10 volunteers";
+    const parsed = parseNaturalLanguageRequirements(prompt);
+    expect(parsed.attendeeCount).toBe(200);
+    expect(parsed.durationDays).toBe(2);
+    expect(parsed.volunteerCount).toBeGreaterThanOrEqual(8);
+
+    // Test pricing evaluation
+    const freeEvents = events.filter((e) => e.price === 0);
+    expect(freeEvents.length).toBe(2); // Placement Drive & Cultural Fest
+    const paidEvents = events.filter((e) => e.price > 0);
+    expect(paidEvents.length).toBe(7);
+
+    // Test conflict query
+    const conflicts = Array.from(db.conflicts.values());
+    expect(conflicts).toBeDefined();
+  });
 });

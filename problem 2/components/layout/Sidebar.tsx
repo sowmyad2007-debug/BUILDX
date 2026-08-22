@@ -44,10 +44,12 @@ export function Sidebar() {
   const studentNav: NavItem[] = [
     { label: "9 Campus Events", href: "/events", icon: Calendar, badge: "Catalog", badgeColor: "bg-blue-500/20 text-blue-400 border border-blue-500/30" },
     { label: "My Passes & Dashboard", href: "/dashboard", icon: QrCode },
+    { label: "AI Event Assistant", href: "/assistant", icon: Bot, badge: "Bot", badgeColor: "bg-purple-500/20 text-purple-400 border border-purple-500/30" },
   ];
 
   const organizerNav: NavItem[] = [
     { label: "AI Requirement Intake", href: "/organizer/create-event", icon: PlusCircle, badge: "NLP", badgeColor: "bg-purple-500/20 text-purple-400 border border-purple-500/30" },
+    { label: "AI Assistant Studio", href: "/assistant", icon: Bot, badge: "Chat", badgeColor: "bg-purple-500/20 text-purple-400 border border-purple-500/30" },
     { label: "Operational Planning", href: "/organizer/planning", icon: Cpu },
     { label: "Venue Planning", href: "/venues", icon: MapPin },
     { label: "Equipment Inventory", href: "/equipment", icon: Package },
